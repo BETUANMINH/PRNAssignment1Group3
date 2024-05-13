@@ -8,6 +8,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFAssignment1Group3.Common;
+using WPFAssignment1Group3.Models;
 
 namespace WPFAssignment1Group3
 {
@@ -16,9 +18,13 @@ namespace WPFAssignment1Group3
     /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        private readonly IDBRepository _repository;
+        public MainWindow(IDBRepository dbRepository)
         {
+            _repository = dbRepository;
             InitializeComponent();
+           
+
         }
     }
 }
