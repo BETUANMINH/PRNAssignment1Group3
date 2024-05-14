@@ -6,6 +6,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using WPFAssignment1Group3.Models;
 
 namespace WPFAssignment1Group3.Common
 {
@@ -30,7 +31,7 @@ namespace WPFAssignment1Group3.Common
         Task<IDbContextTransaction> BeginTransactionAsync();
 
 
-
+        Task<List<T>> SqlQueryAsync<T>(string sql, params object[] param);
 
         Task<int> ExecuteSqlCommandAsync(string sql, params object[] param);
 
@@ -43,7 +44,6 @@ namespace WPFAssignment1Group3.Common
         Task AddRangeAsync<T>(IEnumerable<T> entities) where T : class;
 
         int Update<T>(T entity) where T : class;
-
 
         Task<int> UpdateAsync<T>(Expression<Func<T, bool>> predicate, Expression<Func<T, T>> updateFactory) where T : class;
 
@@ -58,11 +58,11 @@ namespace WPFAssignment1Group3.Common
         int DeleteRange<T>(IEnumerable<T> entities) where T : class;
 
         Task<int> DeleteAsync<T>(Expression<Func<T, bool>> predicate) where T : class;
-
+        void BulkInsertOrUpdate<T>(IEnumerable<T> entities);
 
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
-        DbContext Context { get; }
+        MyStoreContext Context { get; }
     }
 }
