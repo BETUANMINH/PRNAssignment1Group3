@@ -27,6 +27,7 @@ namespace WPFAssignment1Group3
         {
 
             services.AddSingleton<MainWindow>();
+            services.AddSingleton<Report>();
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             String ConnectionStr = config.GetConnectionString("conn");
 
@@ -37,8 +38,7 @@ namespace WPFAssignment1Group3
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-
+            MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
             base.OnStartup(e);
         }

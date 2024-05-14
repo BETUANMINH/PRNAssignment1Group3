@@ -23,8 +23,6 @@ namespace WPFAssignment1Group3
         {
             _repository = dbRepository;
             InitializeComponent();
-           
-
         }
     }
 }

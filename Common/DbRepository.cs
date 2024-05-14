@@ -14,7 +14,6 @@ using WPFAssignment1Group3.Models;
 
 public class DBRepository : IDBRepository
 {
-    private const int BatchSize = 1000;
 
     public MyStoreContext Context { get; }
 
@@ -43,16 +42,6 @@ public class DBRepository : IDBRepository
         return selector.Compile()(entity);
     }
 
-    public IQueryable<TResult> Filter<T, TResult>(Expression<Func<T, bool>> expression = null,
-        Expression<Func<T, TResult>> selector = null) where T : class
-    {
-        var set = Context.Set<T>();
-        var entities = expression == null ? set : set.Where(expression);
-        if (selector != null) return entities.Select(selector);
-        selector = EF.Functions.GetSelector<T, TResult>();
-        return entities.Select(selector);
-    }
-
     public IQueryable<TResult> Query<TResult>(Func<DbContext, IQueryable<TResult>> expression)
     {
         return expression(Context);
@@ -63,92 +52,11 @@ public class DBRepository : IDBRepository
         expression(Context);
     }
 
-    public IQueryable<T> FromSql<T>(string sql, params object[] param) where T : class
-    {
-        return Context.Set<T>().FromSqlRaw(sql, param);
-    }
-
-    public IQueryable<T> FromSql<T>(string formattedSql) where T : class
-    {
-        return Context.Set<T>().FromSqlRaw(formattedSql);
-    }
-
-
-    public async Task<List<T>> SqlQueryAsync<T>(string sql, params object[] param)
-    {
-        using (var command = Context.Database.GetDbConnection().CreateCommand())
-        {
-            command.CommandText = sql;
-            command.CommandType = CommandType.Text;
-            if (param != null && param.Any())
-            {
-                foreach (var p in param)
-                {
-                    command.Parameters.Add(p);
-                }
-            }
-            await Context.Database.OpenConnectionAsync();
-            using (var result = await command.ExecuteReaderAsync())
-            {
-                List<T> list = new List<T>();
-                while (await result.ReadAsync())
-                {
-                    var typeInfo = typeof(T);
-                    if (typeInfo.Name == "String")
-                    {
-                        list.Add((T)result[0]);
-                    }
-                    else
-                    {
-                        var obj = Activator.CreateInstance<T>();
-                        if (typeof(T).IsClass)
-                        {
-                            foreach (PropertyInfo prop in obj.GetType().GetProperties())
-                            {
-                                if (!Equals(result[prop.Name], DBNull.Value))
-                                {
-                                    prop.SetValue(obj, result[prop.Name], null);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            obj = (T)result[0];
-                        }
-
-                        list.Add(obj);
-                    }
-                }
-                return list;
-            }
-        }
-    }
-
-
-
     public async Task<IDbContextTransaction> BeginTransactionAsync()
     {
         return await Context.Database.BeginTransactionAsync();
     }
 
-
-    public async Task<int> ExecuteSqlCommandAsync(string sql, params object[] param)
-    {
-        return await Context.Database.ExecuteSqlRawAsync(sql, param);
-    }
-
-
-    public async Task<int> ExecuteSqlCommandAsync(string formattedSql)
-    {
-        return await Context.Database.ExecuteSqlRawAsync(formattedSql);
-    }
-
-    [Obsolete]
-    public virtual T Add<T>(T entity) where T : class
-    {
-        var entry = Context.Set<T>().Add(entity);
-        return entry.Entity;
-    }
 
     public async virtual Task<T> AddAsync<T>(T entity) where T : class
     {
@@ -248,10 +156,6 @@ public class DBRepository : IDBRepository
     {
     }
 
-    public void BulkInsertOrUpdate<T>(IEnumerable<T> entities)
-    {
-        throw new NotImplementedException();
-    }
 
 }
 public static class EFUtil
