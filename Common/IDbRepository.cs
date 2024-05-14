@@ -18,25 +18,14 @@ namespace WPFAssignment1Group3.Common
 
         Task<TResult> FirstOrDefaultAsync<T, TResult>(Expression<Func<T, bool>> expression = null, Expression<Func<T, TResult>> selector = null) where T : class;
 
-        IQueryable<TResult> Filter<T, TResult>(Expression<Func<T, bool>> expression = null, Expression<Func<T, TResult>> selector = null) where T : class;
 
         IQueryable<TResult> Query<TResult>(Func<DbContext, IQueryable<TResult>> expression);
 
         void Execute(Action<DbContext> expression);
 
-        IQueryable<T> FromSql<T>(string sql, params object[] param) where T : class;
-
-        IQueryable<T> FromSql<T>(string formattedSql) where T : class;
 
         Task<IDbContextTransaction> BeginTransactionAsync();
 
-
-        Task<List<T>> SqlQueryAsync<T>(string sql, params object[] param);
-
-        Task<int> ExecuteSqlCommandAsync(string sql, params object[] param);
-
-
-        Task<int> ExecuteSqlCommandAsync(string formattedSql);
 
 
         Task<T> AddAsync<T>(T entity) where T : class;
@@ -58,8 +47,7 @@ namespace WPFAssignment1Group3.Common
         int DeleteRange<T>(IEnumerable<T> entities) where T : class;
 
         Task<int> DeleteAsync<T>(Expression<Func<T, bool>> predicate) where T : class;
-        void BulkInsertOrUpdate<T>(IEnumerable<T> entities);
-
+       
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default(CancellationToken));
 
