@@ -3,9 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.IO;
 using System.Windows;
 using WPFAssignment1Group3.Common;
 using WPFAssignment1Group3.Models;
+using WPFAssignment1Group3.Services;
+using WPFAssignment1Group3.State;
+using WPFAssignment1Group3.Views;
 
 
 namespace WPFAssignment1Group3
@@ -14,6 +18,9 @@ namespace WPFAssignment1Group3
     public partial class App : Application
     {
         private readonly IHost _host;
+
+        public static AccountStore AccountStore;
+
         public App()
         {
             _host = Host.CreateDefaultBuilder()
@@ -26,12 +33,27 @@ namespace WPFAssignment1Group3
         private void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddSingleton<MainWindow>();
-            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            String ConnectionStr = config.GetConnectionString("conn");
+            //var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            //String ConnectionStr = config.GetConnectionString("conSQLServer");
 
-            services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(ConnectionStr));
-            services.AddSingleton<IDBRepository,DBRepository>();
+            //services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(ConnectionStr));
+
+            //my config
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
+                                                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+            IConfigurationRoot config = builder.Build();
+            services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(config.GetConnectionString(@"conSQLServer")));
+
+            //DI
+            services.AddSingleton<MainWindow>();
+            services.AddSingleton<Login>();
+
+            services.AddSingleton<IDBRepository, DBRepository>();
+            services.AddSingleton<IStaffServices, StaffServices>();
+
+            services.AddSingleton<IAuthenticator, Authenticator>();
+
+
         }
 
         protected override async void OnStartup(StartupEventArgs e)
@@ -40,6 +62,7 @@ namespace WPFAssignment1Group3
             var mainWindow = _host.Services.GetRequiredService<MainWindow>();
 
             mainWindow.Show();
+
             base.OnStartup(e);
         }
         protected override async void OnExit(ExitEventArgs e)
@@ -50,6 +73,7 @@ namespace WPFAssignment1Group3
             }
             base.OnExit(e);
         }
+
     }
 
 }

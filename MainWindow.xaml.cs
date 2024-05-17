@@ -10,6 +10,9 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WPFAssignment1Group3.Common;
 using WPFAssignment1Group3.Models;
+using WPFAssignment1Group3.Services;
+using WPFAssignment1Group3.State;
+using WPFAssignment1Group3.Views;
 
 namespace WPFAssignment1Group3
 {
@@ -19,12 +22,41 @@ namespace WPFAssignment1Group3
     public partial class MainWindow : Window
     {
         private readonly IDBRepository _repository;
-        public MainWindow(IDBRepository dbRepository)
-        {
-            _repository = dbRepository;
-            InitializeComponent();
-           
+        private readonly IAuthenticator _authenticator;
 
+        public MainWindow(IDBRepository repository, IAuthenticator authenticator)
+        {
+            InitializeComponent();
+            _repository = repository;
+            _authenticator = authenticator;
+
+            gridDetails.Visibility = Visibility.Hidden;
+        }       
+        protected override void OnActivated(EventArgs e)
+        {
+            base.OnActivated(e);
+
+            if (App.AccountStore == null)
+            {
+                Login login = new Login(_authenticator);
+                login.ShowDialog();
+            } else
+            {
+                tbUsername.Text = App.AccountStore.Username;
+                tbRole.Text = (App.AccountStore.role == 0) ? StaffRole.Admin.ToString() : StaffRole.Staff.ToString();
+                gridDetails.Visibility = Visibility.Visible;
+            }
         }
+        protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+        {
+            base.OnPropertyChanged(e);
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            App.AccountStore = null;
+            gridDetails.Visibility = Visibility.Hidden;
+            base.OnClosed(e);
+        }
+
     }
 }

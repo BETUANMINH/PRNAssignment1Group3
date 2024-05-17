@@ -17,4 +17,9 @@ namespace WPFAssignment1Group3.Models
 
         public virtual ICollection<Order> Orders { get; set; }
     }
+    public enum StaffRole
+    {
+        Admin = 0,
+        Staff = 1
+    }
 }
