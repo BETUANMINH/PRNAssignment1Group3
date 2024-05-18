@@ -39,28 +39,28 @@ namespace WPFAssignment1Group3
             //services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(ConnectionStr));
 
             //my config
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                                                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot config = builder.Build();
-            services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(config.GetConnectionString(@"conSQLServer")));
 
             //DI
             services.AddSingleton<MainWindow>();
             services.AddSingleton<Report>();
             services.AddSingleton<Login>();
+            services.AddSingleton<ProductWindow>();
 
             services.AddSingleton<IDBRepository, DBRepository>();
             services.AddSingleton<IStaffServices, StaffServices>();
 
             services.AddSingleton<IAuthenticator, Authenticator>();
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            String ConnectionStr = config.GetConnectionString("conn");
 
+            services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(ConnectionStr));
 
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
-            MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            Login mainWindow = _host.Services.GetRequiredService<Login>();
             mainWindow.Show();
 
             base.OnStartup(e);

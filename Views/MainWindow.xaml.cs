@@ -31,16 +31,17 @@ namespace WPFAssignment1Group3
             _authenticator = authenticator;
 
             gridDetails.Visibility = Visibility.Hidden;
-        }       
+        }
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
 
             if (App.AccountStore == null)
             {
-                Login login = new Login(_authenticator);
+                Login login = new Login(_authenticator, _repository);
                 login.ShowDialog();
-            } else
+            }
+            else
             {
                 tbUsername.Text = App.AccountStore.Username;
                 tbRole.Text = (App.AccountStore.role == 0) ? StaffRole.Admin.ToString() : StaffRole.Staff.ToString();
@@ -58,5 +59,26 @@ namespace WPFAssignment1Group3
             base.OnClosed(e);
         }
 
+        private void Report_Click(object sender, RoutedEventArgs e)
+        {
+            Report report = new Report(_repository);
+            report.ShowDialog();
+
+        }
+
+        private void btnAddProduct_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.AccountStore.role == (int)StaffRole.Admin)
+            {
+                ProductWindow productWindow = new ProductWindow(_repository);
+
+                productWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("You do not have permission to access this feature");
+                return;
+            }
+        }
     }
 }

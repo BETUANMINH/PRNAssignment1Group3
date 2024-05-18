@@ -34,23 +34,36 @@ namespace WPFAssignment1Group3
         private async void LoadData()
         {
             var  currentTime = DateTime.Now;
-            var defaultsearch = await _repository.Context.Set<Order>().Where(x => x.OrderDate < currentTime && x.OrderDate > currentTime.AddMonths(-1)).ToListAsync();
-            listViewOrder.ItemsSource = defaultsearch;
+            if(App.AccountStore.role == (int)StaffRole.Admin)
+            {
+                var defaultsearch = await _repository.Context.Set<Order>().Where(x => x.OrderDate < currentTime && x.OrderDate > currentTime.AddMonths(-1)).ToListAsync();
+                listViewOrder.ItemsSource = defaultsearch;
+            }
+            else
+            {
+                var defaultsearch = await _repository.Context.Set<Order>().Where(x => x.OrderDate < currentTime && x.OrderDate > currentTime.AddMonths(-1) && x.StaffId == App.AccountStore.Id).ToListAsync();
+                listViewOrder.ItemsSource = defaultsearch;
+            }
         }
 
         private async void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
-            IQueryable<Order> data = _repository.Context.Set<Order>();
             if (startDate.SelectedDate == null || endDate.SelectedDate == null)
             {
                 listViewOrder.ItemsSource = null;
                 return;
+            }
+            IQueryable<Order> data = _repository.Context.Set<Order>();
+            if(App.AccountStore.role != (int)StaffRole.Admin)
+            {
+                data = data.Where(x => x.StaffId == App.AccountStore.Id);
             }
             DateTime start = startDate.SelectedDate.Value;
             DateTime end = endDate.SelectedDate.Value;
             if (start > end)
             {
                 MessageBox.Show("Start date must be less than end date");
+                listViewOrder.ItemsSource = null;
                 return;
             }
             else if (start == end)

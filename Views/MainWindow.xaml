@@ -49,7 +49,9 @@
                     <Button Name="btnAddStaff"
                     Content="Add Staff" Width="100" Height="30" Margin="10"/>
                     <Button Name="btnAddProduct"
-                    Content="Add Product" Width="100" Height="30" Margin="10"/>
+                    Content="Add Product" Width="100" Height="30" Margin="10" Click="btnAddProduct_Click"/>
+                    <Button x:Name="Report" 
+                            Content="Report" Width="100" Height="30" Margin="10" Click="Report_Click"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
