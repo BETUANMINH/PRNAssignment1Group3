@@ -28,11 +28,18 @@ namespace WPFAssignment1Group3
 
             services.AddSingleton<MainWindow>();
             services.AddSingleton<Report>();
+            services.AddSingleton<OrderWindow>();
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            String ConnectionStr = config.GetConnectionString("conn");
+            String ConnectionStr = config.GetConnectionString("DefaultConnection");
+
+            Console.WriteLine("Connection String:" + ConnectionStr);
+            if (string.IsNullOrEmpty(ConnectionStr))
+            {
+                throw new Exception("Connection string is null or empty.");
+            }
 
             services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(ConnectionStr));
-            services.AddSingleton<IDBRepository,DBRepository>();
+            services.AddSingleton<IDBRepository, DBRepository>();
         }
 
         protected override async void OnStartup(StartupEventArgs e)
