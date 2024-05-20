@@ -80,5 +80,19 @@ namespace WPFAssignment1Group3
                 return;
             }
         }
+
+        private void btnAddOrders_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.AccountStore.role == (int)StaffRole.Admin)
+            {
+                OrderWindow orderWindow = new OrderWindow(_repository);
+
+                orderWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("You do not have permission to access this feature.");
+            }
+        }
     }
 }

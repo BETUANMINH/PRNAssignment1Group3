@@ -22,7 +22,7 @@ namespace WPFAssignment1Group3
     /// </summary>
     public partial class Report : Window
     {
-        private IDBRepository _repository;
+        private readonly IDBRepository _repository;
         public Report(IDBRepository dB)
         {
             _repository = dB;
@@ -33,8 +33,8 @@ namespace WPFAssignment1Group3
         }
         private async void LoadData()
         {
-            var  currentTime = DateTime.Now;
-            if(App.AccountStore.role == (int)StaffRole.Admin)
+            var currentTime = DateTime.Now;
+            if (App.AccountStore.role == (int)StaffRole.Admin)
             {
                 var defaultsearch = await _repository.Context.Set<Order>().Where(x => x.OrderDate < currentTime && x.OrderDate > currentTime.AddMonths(-1)).ToListAsync();
                 listViewOrder.ItemsSource = defaultsearch;
@@ -54,7 +54,7 @@ namespace WPFAssignment1Group3
                 return;
             }
             IQueryable<Order> data = _repository.Context.Set<Order>();
-            if(App.AccountStore.role != (int)StaffRole.Admin)
+            if (App.AccountStore.role != (int)StaffRole.Admin)
             {
                 data = data.Where(x => x.StaffId == App.AccountStore.Id);
             }

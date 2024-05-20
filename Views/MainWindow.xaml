@@ -44,7 +44,7 @@
                 <Button Name ="btnChangePass"
                     Content="Change Password" Width="100" Height="30" Margin="10"/>
                 <Button Name="btnAddOrders"
-                Content="Add Orders" Width="100" Height="30" Margin="10"/>
+                Content="Add Orders" Width="100" Height="30" Margin="10" Click="btnAddOrders_Click"/>
                 <StackPanel >
                     <Button Name="btnAddStaff"
                     Content="Add Staff" Width="100" Height="30" Margin="10"/>
