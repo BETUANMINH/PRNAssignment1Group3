@@ -23,7 +23,7 @@ namespace WPFAssignment1Group3
     /// </summary>
     public partial class Report : Window
     {
-        private IDBRepository _repository;
+        private readonly IDBRepository _repository;
         public Report(IDBRepository dB)
         {
             _repository = dB;

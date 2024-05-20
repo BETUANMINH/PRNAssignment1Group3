@@ -45,6 +45,7 @@ namespace WPFAssignment1Group3
             services.AddSingleton<Report>();
             services.AddSingleton<Login>();
             services.AddSingleton<ProductWindow>();
+            services.AddSingleton<OrderWindow>();
 
             services.AddSingleton<IDBRepository, DBRepository>();
             services.AddSingleton<IStaffServices, StaffServices>();
