@@ -40,12 +40,12 @@ namespace WPFAssignment1Group3
             var name = txtProductName.Text;
             var categoryId = txtCategoryId.Text;
             var price = txtUnitPrice.Text;
-            if(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(categoryId) || string.IsNullOrEmpty(price))
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(categoryId) || string.IsNullOrEmpty(price))
             {
                 MessageBox.Show("Please fill all fields");
                 return;
             }
-            if(!int.TryParse(categoryId, out int categoryIdParsed) || !int.TryParse(price, out int UnitPriceParsed))
+            if (!int.TryParse(categoryId, out int categoryIdParsed) || !int.TryParse(price, out int UnitPriceParsed))
             {
                 MessageBox.Show("Please enter valid number");
                 return;
@@ -96,7 +96,7 @@ namespace WPFAssignment1Group3
         {
             var unitPrice = txtSearchUnitPrice.Text;
             var ProductName = txtSearchName.Text;
-            if(!string.IsNullOrEmpty(unitPrice))
+            if (!string.IsNullOrEmpty(unitPrice))
             {
                 if (!int.TryParse(unitPrice, out int unitParsed))
                 {
@@ -113,7 +113,7 @@ namespace WPFAssignment1Group3
             {
                 products = products.Where(x => x.UnitPrice == int.Parse(unitPrice));
             }
-            
+
             lvProducts.ItemsSource = await products.ToListAsync();
         }
 
@@ -131,16 +131,23 @@ namespace WPFAssignment1Group3
                 MessageBox.Show("Please enter valid number");
                 return;
             }
-            //check product id exists
+            // Check if the product exists
             var productExists = await _repository.Context.Set<Product>().Where(x => x.ProductId == IdParsed).FirstOrDefaultAsync();
             if (productExists == null)
             {
                 MessageBox.Show("Product not Found");
                 return;
             }
-            _repository.Delete(productExists);
-            await _repository.SaveChangesAsync();
-            LoadDeafaaultData();
+
+            // Show confirmation dialog
+            var result = MessageBox.Show("Are you sure you want to delete this product?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                // Proceed with deletion
+                _repository.Delete(productExists);
+                await _repository.SaveChangesAsync();
+                LoadDeafaaultData();
+            }
         }
     }
 }
