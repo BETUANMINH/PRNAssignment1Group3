@@ -88,7 +88,6 @@ namespace WPFAssignment1Group3.Views
                     return;
 
                 }
-                MessageBox.Show("Cac");
                 EditStaff("delete", staffID);
             }
 
@@ -96,12 +95,12 @@ namespace WPFAssignment1Group3.Views
 
         private async void btnSearch_Click(object sender, RoutedEventArgs e)
         {
-            if(string.IsNullOrEmpty(txtStaffID.Text))
+            if (string.IsNullOrEmpty(txtSearch.Text) || txtSearch.Text.Contains(' '))
             {
-                MessageBox.Show("Can't null");
-                return;
+
+                lvStaff.ItemsSource = await _staffServices.GetAlls();
             }
-            lvStaff.ItemsSource = await _staffServices.GetStaffsByName(txtStaffID.Text);
+            lvStaff.ItemsSource = await _staffServices.GetStaffsByName(txtSearch.Text);
 
         }
         private async void LoadStaffs()

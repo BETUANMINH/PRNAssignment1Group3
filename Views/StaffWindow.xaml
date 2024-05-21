@@ -5,39 +5,39 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFAssignment1Group3.Views"
         mc:Ignorable="d"
-        Title="StaffWindow" Height="600" Width="458" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner">
+        Title="StaffWindow" Height="700" Width="458" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <StackPanel Background="LightBlue"  Orientation ="Vertical"  Grid.Row="0"
-                        HorizontalAlignment="Left" VerticalAlignment="Top">
+        <StackPanel Background="LightBlue"  Orientation ="Vertical"  Grid.Row="0">
 
             <Label Name="lblInstruction" Foreground="Red" FontWeight="DemiBold" 
                    FontSize="20" Content="Staff Information"/>
 
             <Label Content="StaffId"/>
             <TextBox Name="txtStaffID" HorizontalAlignment="Left" 
-                     IsReadOnly="True" Height="25" Width="300"
+                     IsReadOnly="True" Height="25" Width="400"
                      Text="{Binding Path=StaffId, Mode=OneWay}" 
                      DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
 
             <Label Content="Name" />
             <TextBox Name="nameTxt" HorizontalAlignment="Left"
-                     Height="25" Width="300"  
+                     Height="25" Width="400"  
                      Text="{Binding Path=Name, Mode=OneWay}" 
                      DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
 
             <Label Content="Password"/>
             <TextBox Name="passTxt" HorizontalAlignment="Left"
-                     Height="25" Width="300"  
+                     Height="25" Width="400"  
                      Text="{Binding Path=Password, Mode=OneWay}" 
                      DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
 
             <Label Content="Role"/>
             <TextBox Name="roleTxt" HorizontalAlignment="Left"
-                     Height="25" Width="300"  
+                     Height="25" Width="400"  
                      Text="{Binding Path=Role, Mode=OneWay}" 
                      DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
 
@@ -48,12 +48,13 @@
                         />
                 <Button x:Name="btnDelete" Margin="10"  Width="80" Content="Delete" Click="btnDelete_Click"
                          />
-
-                <Button x:Name="btnSearch" Margin="10"  Width="80" Content="Search" Click="btnSearch_Click"
-                         />
             </StackPanel>
         </StackPanel>
-        <ListView Grid.Row="1" Name="lvStaff" Margin="4,63,4,0">
+        <StackPanel Grid.Row="1">
+            <Button x:Name="btnSearch" Margin="10"  Width="80" Content="Search" Click="btnSearch_Click"/>
+            <TextBox Name="txtSearch" Height="25" Width="300"  />
+        </StackPanel>
+        <ListView Grid.Row="2" Name="lvStaff" Margin="4,63,4,0">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Staff ID"  Width="100" 

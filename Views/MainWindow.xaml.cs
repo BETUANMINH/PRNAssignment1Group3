@@ -39,17 +39,9 @@ namespace WPFAssignment1Group3
         {
             base.OnActivated(e);
 
-            if (App.AccountStore == null)
-            {
-                Login login = new Login(_authenticator, _repository, _staffServices);
-                login.ShowDialog();
-            }
-            else
-            {
-                tbUsername.Text = $"Username: {App.AccountStore.Username}";
-                var role = (App.AccountStore.role == 0) ? StaffRole.Admin.ToString() : StaffRole.Staff.ToString();
-                tbRole.Text = $"Role: {role}";
-            }
+            tbUsername.Text = $"Username: {App.AccountStore.Username}";
+            var role = (App.AccountStore.role == 0) ? StaffRole.Admin.ToString() : StaffRole.Staff.ToString();
+            tbRole.Text = $"Role: {role}";
         }
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
         {
@@ -99,7 +91,8 @@ namespace WPFAssignment1Group3
                     MessageBox.Show("Successfully!");
                     tbPass.Text = tbConfirm.Text = "";
                     spChangePass.Visibility = Visibility.Hidden;
-                }else
+                }
+                else
                 {
                     MessageBox.Show("Can't change, try again!");
                 }
@@ -108,16 +101,8 @@ namespace WPFAssignment1Group3
 
         private void btnOrder_Click(object sender, RoutedEventArgs e)
         {
-            if (App.AccountStore.role == (int)StaffRole.Admin)
-            {
-                OrderWindow orderWindow = new OrderWindow(_repository);
-
-                orderWindow.ShowDialog();
-            }
-            else
-            {
-                MessageBox.Show("You do not have permission to access this feature.");
-            }
+            OrderWindow orderWindow = new OrderWindow(_repository);
+            orderWindow.ShowDialog();
         }
 
         private void btnProduct_Click(object sender, RoutedEventArgs e)
@@ -152,7 +137,7 @@ namespace WPFAssignment1Group3
         private void btnLogout_Click(object sender, RoutedEventArgs e)
         {
             App.AccountStore = null;
-            Login login = new Login(_authenticator, _repository , _staffServices);
+            Login login = new Login(_authenticator, _repository, _staffServices);
             login.Show();
             this.Close();
         }
