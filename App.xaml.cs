@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Windows;
 using WPFAssignment1Group3.Common;
@@ -21,6 +22,8 @@ namespace WPFAssignment1Group3
 
         public static AccountStore AccountStore;
 
+        public static DefaultAccount defAcc;
+
         public App()
         {
             _host = Host.CreateDefaultBuilder()
@@ -32,38 +35,40 @@ namespace WPFAssignment1Group3
         }
         private void ConfigureServices(IServiceCollection services)
         {
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            String ConnectionStr = config.GetConnectionString("conn");
 
-            //var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
-            //String ConnectionStr = config.GetConnectionString("conSQLServer");
-
-            //services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(ConnectionStr));
-
-            //my config
-            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
-                                                    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
-            IConfigurationRoot config = builder.Build();
-            services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(config.GetConnectionString(@"conSQLServer")));
-
+            services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(ConnectionStr));
+            try
+            {
+                defAcc = config.GetSection("DefaultAdminCredentials").Get<DefaultAccount>();
+            }catch (Exception ex)
+            {
+                throw new Exception();
+            }
             //DI
             services.AddSingleton<MainWindow>();
             services.AddSingleton<Report>();
             services.AddSingleton<Login>();
+            services.AddSingleton<ProductWindow>();
+            services.AddSingleton<OrderWindow>();
 
             services.AddSingleton<IDBRepository, DBRepository>();
             services.AddSingleton<IStaffServices, StaffServices>();
 
             services.AddSingleton<IAuthenticator, Authenticator>();
 
+            //default account
+            
 
         }
 
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
-            MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
+            Login mainWindow = _host.Services.GetRequiredService<Login>();
             mainWindow.Show();
 
-            mainWindow.Show();
             base.OnStartup(e);
         }
         protected override async void OnExit(ExitEventArgs e)

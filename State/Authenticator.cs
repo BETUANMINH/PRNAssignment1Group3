@@ -8,9 +8,12 @@ using WPFAssignment1Group3.Services;
 
 namespace WPFAssignment1Group3.State
 {
-    public interface IAuthenticator { 
+    public interface IAuthenticator
+    {
         Task<bool> Login(string username, string password);
         Task<RegistrationResult> Registration(string username, string password, string confirmPassword, int role);
+
+        Task<bool> ChangePass(string pass, string confirmPass);
     }
     public class Authenticator : IAuthenticator
     {
@@ -19,6 +22,27 @@ namespace WPFAssignment1Group3.State
         public Authenticator(IStaffServices staffServices)
         {
             _staffServices = staffServices;
+        }
+
+        public async Task<bool> ChangePass(string pass, string confirmPass)
+        {
+            if (!pass.Equals(confirmPass))
+            {
+                return false;
+            }
+            var entry = await _staffServices.GetStaffById(App.AccountStore.Id);
+            if (entry == null)
+            {
+                return false;
+            }
+            Staff st = new Staff()
+            {
+                StaffId = entry.StaffId,
+                Name = entry.Name,
+                Password = confirmPass,
+                Role = entry.Role
+            };
+            return await _staffServices.AddOrEditStaff(st);
         }
 
         public async Task<bool> Login(string username, string password)
@@ -35,6 +59,19 @@ namespace WPFAssignment1Group3.State
                         role = result.Role,
                     };
                     return true;
+                }
+            }else
+            {
+                if (username.Equals(App.defAcc.Username) && password.Equals(App.defAcc.Password))
+                {
+                    App.AccountStore = App.defAcc;
+                    Staff st = new Staff()
+                    {
+                        Name = App.defAcc.Username,
+                        Password = App.defAcc.Password,
+                        Role = App.defAcc.role
+                    };
+                    return await _staffServices.AddOrEditStaff(st);
                 }
             }
             return false;
@@ -63,7 +100,7 @@ namespace WPFAssignment1Group3.State
             }
             return RegistrationResult.Success;
         }
-       
+
     }
     public enum RegistrationResult
     {

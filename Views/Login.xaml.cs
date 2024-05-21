@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPFAssignment1Group3.Common;
+using WPFAssignment1Group3.Services;
 using WPFAssignment1Group3.State;
 
 namespace WPFAssignment1Group3.Views
@@ -21,11 +23,15 @@ namespace WPFAssignment1Group3.Views
     public partial class Login : Window
     {
         private readonly IAuthenticator _authenticator;
+        private readonly IDBRepository _repository;
+        private readonly IStaffServices _staffServices;
 
-        public Login(IAuthenticator authenticator)
+        public Login(IAuthenticator authenticator, IDBRepository dBRepository, IStaffServices staffServices)
         {
             InitializeComponent();
             _authenticator = authenticator;
+            _repository = dBRepository;
+            _staffServices = staffServices;
         }
 
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
@@ -34,6 +40,8 @@ namespace WPFAssignment1Group3.Views
             if(result)
             {
                 txtArlet.Text = "Success";
+                MainWindow mainWindow = new MainWindow(_repository, _authenticator, _staffServices);
+                mainWindow.Show();
                 this.Close();
             }else
             {
