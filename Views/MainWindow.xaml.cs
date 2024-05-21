@@ -24,6 +24,7 @@ namespace WPFAssignment1Group3
         private readonly IDBRepository _repository;
         private readonly IAuthenticator _authenticator;
         private readonly IStaffServices _staffServices;
+        private bool isShow = false;
         public MainWindow(IDBRepository repository, IAuthenticator authenticator, IStaffServices staffServices)
         {
             InitializeComponent();
@@ -93,6 +94,86 @@ namespace WPFAssignment1Group3
             else
             {
                 MessageBox.Show("You do not have permission to access this feature.");
+            }
+        }
+
+        private void btnLogout_Click(object sender, RoutedEventArgs e)
+        {
+            App.AccountStore = null;
+            Login login = new Login(_authenticator, _repository, _staffServices);
+            login.Show();
+            this.Close();
+        }
+
+        private void btnStaff_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.AccountStore.role == (int)StaffRole.Admin)
+            {
+                StaffWindow staffWindow = new StaffWindow(_staffServices);
+
+                staffWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("You do not have permission to access this feature.");
+            }
+        }
+
+        private void btnProduct_Click(object sender, RoutedEventArgs e)
+        {
+            if (App.AccountStore.role == (int)StaffRole.Admin)
+            {
+                ProductWindow productWindow = new ProductWindow(_repository);
+
+                productWindow.ShowDialog();
+            }
+            else
+            {
+                MessageBox.Show("You do not have permission to access this feature");
+                return;
+            }
+        }
+
+        private void btnChangePass_Click(object sender, RoutedEventArgs e)
+        {
+            isShow = !isShow;
+            if (isShow)
+            {
+                spChangePass.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                spChangePass.Visibility = Visibility.Hidden;
+
+            }
+        }
+
+        private void btnOrder_Click(object sender, RoutedEventArgs e)
+        {
+            OrderWindow orderWindow = new OrderWindow(_repository);
+            orderWindow.ShowDialog();
+        }
+        private async void btnConfirmChangePass_Click(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrEmpty(tbPass.Text) || string.IsNullOrEmpty(tbConfirm.Text))
+            {
+                MessageBox.Show("Can not empty");
+            }
+
+            var confirmChange = MessageBox.Show("Change Password ?", "Change Password", MessageBoxButton.YesNo);
+            if (confirmChange == MessageBoxResult.Yes)
+            {
+                var result = await _authenticator.ChangePass(tbPass.Text, tbConfirm.Text);
+                if (result)
+                {
+                    MessageBox.Show("Successfully!");
+                    tbPass.Text = tbConfirm.Text = "";
+                    spChangePass.Visibility = Visibility.Hidden;
+                }
+                else
+                {
+                    MessageBox.Show("Can't change, try again!");
+                }
             }
         }
     }
