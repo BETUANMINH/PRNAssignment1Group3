@@ -46,6 +46,7 @@ namespace WPFAssignment1Group3
 
             //DI
             services.AddSingleton<MainWindow>();
+            services.AddSingleton<Report>();
             services.AddSingleton<Login>();
 
             services.AddSingleton<IDBRepository, DBRepository>();
@@ -59,10 +60,10 @@ namespace WPFAssignment1Group3
         protected override async void OnStartup(StartupEventArgs e)
         {
             await _host.StartAsync();
-            var mainWindow = _host.Services.GetRequiredService<MainWindow>();
-
+            MainWindow mainWindow = _host.Services.GetRequiredService<MainWindow>();
             mainWindow.Show();
 
+            mainWindow.Show();
             base.OnStartup(e);
         }
         protected override async void OnExit(ExitEventArgs e)
