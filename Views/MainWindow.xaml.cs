@@ -23,14 +23,15 @@ namespace WPFAssignment1Group3
     {
         private readonly IDBRepository _repository;
         private readonly IAuthenticator _authenticator;
-
-        public MainWindow(IDBRepository repository, IAuthenticator authenticator)
+        private readonly IStaffServices _staffServices;
+        public MainWindow(IDBRepository repository, IAuthenticator authenticator, IStaffServices staffServices)
         {
             InitializeComponent();
             _repository = repository;
             _authenticator = authenticator;
 
             gridDetails.Visibility = Visibility.Hidden;
+            _staffServices = staffServices;
         }
         protected override void OnActivated(EventArgs e)
         {
@@ -38,8 +39,8 @@ namespace WPFAssignment1Group3
 
             if (App.AccountStore == null)
             {
-                Login login = new Login(_authenticator, _repository);
-                login.ShowDialog();
+                //Login login = new Login(_authenticator, _repository);
+                //login.ShowDialog();
             }
             else
             {

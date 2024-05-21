@@ -11,6 +11,7 @@ namespace WPFAssignment1Group3.Services
     public interface IStaffServices
     {
         Task<List<Staff>> GetAlls();
+        Task<List<Staff>> GetStaffsByName(string name);
         Task<Staff> GetStaffById(int id);
         Task<Staff> GetStaffByName(string username);
         Task<bool> AddOrEditStaff(Staff staff);
@@ -53,10 +54,10 @@ namespace WPFAssignment1Group3.Services
             if(entry != null)
             {
                 _context.Remove(entry);
+                await _context.SaveChangesAsync();
                 return true;
             }
             return false;
-            
         }
 
         public async Task<List<Staff>> GetAlls()
@@ -69,7 +70,12 @@ namespace WPFAssignment1Group3.Services
         {
             var result = await _context.Staffs.FirstOrDefaultAsync(e => e.StaffId == id);
             return result;
+        }
 
+        public async Task<List<Staff>> GetStaffsByName(string name)
+        {
+            var result = await _context.Staffs.Where(e => e.Name.Contains(name)).ToListAsync();
+            return result;
         }
     }
 }
