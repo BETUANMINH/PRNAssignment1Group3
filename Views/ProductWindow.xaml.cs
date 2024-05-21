@@ -59,6 +59,7 @@ namespace WPFAssignment1Group3
             await _repository.AddAsync(product);
             await _repository.SaveChangesAsync();
             LoadDeafaaultData();
+            MessageBox.Show("Add success");
 
         }
 
@@ -90,6 +91,8 @@ namespace WPFAssignment1Group3
             productExists.CategoryId = categoryIdParsed;
             productExists.UnitPrice = UnitPriceParsed;
             await _repository.SaveChangesAsync();
+            LoadDeafaaultData();
+            MessageBox.Show("Update success");
         }
 
         private async void SearchProduct(object sender, RoutedEventArgs e)
@@ -147,6 +150,7 @@ namespace WPFAssignment1Group3
                 _repository.Delete(productExists);
                 await _repository.SaveChangesAsync();
                 LoadDeafaaultData();
+                MessageBox.Show("Delete success");
             }
         }
     }
