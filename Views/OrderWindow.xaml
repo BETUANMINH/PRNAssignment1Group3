@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFAssignment1Group3"
         mc:Ignorable="d"
-        Title="OrderWindow" Height="450" Width="800">
+        Title="Order Management" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
@@ -25,43 +25,25 @@
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Date" Grid.Column="0"></Label>
-                <DatePicker x:Name="dpDate" Width="120" Grid.Column="1" HorizontalAlignment="Left" SelectedDateChanged="dpDate_SelectedDateChanged"/>
-            </Grid>
-        </StackPanel>
-
-        <!--Form to add/modify Order-->
-        <StackPanel Grid.Row="0" Grid.Column="2" Background="LightBlue" Orientation="Vertical">
-            <Label Content="Order Form" FontSize="14" FontWeight="Bold" Margin="0"/>
-            <Grid Margin="10">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <Label Content="Date" Grid.Column="0"></Label>
+                <DatePicker x:Name="dpDate" Width="120" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"/>
+                <Button Content="Search" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Left" Click="btnSearch_Click"/>
+                <Button Content="Reset filter" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Left" Click="btnResetFilter_Click"/>
 
-                <Label Content="Order ID" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="tbOrderId" Width="120" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"/>
-
-                <Label Content="Order Date" Grid.Row="1" Grid.Column="0"/>
-                <DatePicker x:Name="dpOrderDate" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"/>
-
-                <Label Content="Staff ID" Grid.Row="2" Grid.Column="0"/>
-                <TextBox x:Name="tbStaffId" Width="120" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"/>
-
-                <Button Content="Submit" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Click="btnSubmit_Click"/>
+                <Button Content="Add new Order" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Click="btnAddOrder_Click"/>
             </Grid>
         </StackPanel>
 
         <!--Form to add/modify Order Details-->
-        <StackPanel Grid.Row="0" Grid.Column="3" Background="LightBlue" Orientation="Vertical">
+        <StackPanel Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Background="LightBlue" Orientation="Vertical">
             <Label Content="Order Detail Form" FontSize="14" FontWeight="Bold" Margin="0"/>
             <Grid Margin="10">
                 <Grid.RowDefinitions>
@@ -78,10 +60,10 @@
                 </Grid.ColumnDefinitions>
 
                 <Label Content="Order Detail ID" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="tbOrderDetailId" Width="120" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="tbOrderDetailId" Width="120" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"/>
 
                 <Label Content="Order ID" Grid.Row="1" Grid.Column="0"/>
-                <TextBox x:Name="tbOrderDId" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="tbOrderDId" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"/>
 
                 <Label Content="Product ID" Grid.Row="2" Grid.Column="0"/>
                 <TextBox x:Name="tbProductId" Width="120" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" TextChanged="tbProductId_TextChanged"/>
@@ -93,7 +75,8 @@
                 <TextBlock x:Name="tbUnitPrice" Width="120" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left"/>
 
 
-                <Button Content="Save" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Click="btnSave_Click"/>
+                <Button Content="Add detail" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" Click="btnAddDetail_Click"/>
+                <Button Content="Edit detail" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Click="btnEditDetail_Click"/>
             </Grid>
         </StackPanel>
 
