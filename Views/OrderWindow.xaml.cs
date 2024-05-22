@@ -29,50 +29,20 @@ namespace WPFAssignment1Group3
             InitializeComponent();
             _repository = repository;
             LoadData();
-            dpOrderDate.SelectedDate = DateTime.Now;
-            tbStaffId.Text = App.AccountStore.Id.ToString();
+            dpDate.SelectedDate = DateTime.Now;
 
             lvOrders.SelectionChanged += lvOrders_SelectionChanged;
-            dpDate.SelectedDateChanged += dpDate_SelectedDateChanged;
         }
 
-        private void LoadData()
+        private async void LoadData()
         {
-            var orders = _repository.Context.Set<Order>().ToList();
+            var orders = await _repository.Context.Set<Order>().Where(o => o.StaffId == App.AccountStore.Id).ToListAsync();
             lvOrders.ItemsSource = orders;
         }
         private bool IsValidSelectedDate()
         {
             // Check if SelectedDate has a value and if it is a valid date
             return dpDate.SelectedDate.HasValue;
-        }
-
-        private async void dpDate_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var date = DateTime.Now;
-            try
-            {
-                //Get date from DatePicker
-                if (IsValidSelectedDate())
-                {
-                    date = dpDate.SelectedDate.Value;
-                }
-                else
-                {
-                    MessageBox.Show("Your date input is invalid.");
-                    return;
-                }
-
-                //Load Orders which have OrderDate is chosen date from DB
-                IQueryable<Order> orders = _repository.Context.Set<Order>().Where(o => o.OrderDate.Date == date);
-
-                //Display Orders in ListView
-                lvOrders.ItemsSource = await orders.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occured: {ex.Message}");
-            }
         }
 
         private async void btnDelete_Click(object sender, RoutedEventArgs e)
@@ -106,54 +76,17 @@ namespace WPFAssignment1Group3
             }
         }
 
-        private async void btnSubmit_Click(object sender, RoutedEventArgs e)
+        private async void btnAddOrder_Click(object sender, RoutedEventArgs e)
         {
-            var orderId = tbOrderId.Text;
-            var orderDate = dpOrderDate.SelectedDate;
-            var staffId = tbStaffId.Text;
-
-            if (string.IsNullOrEmpty(orderId))
+            var order = new Order
             {
-                var order = new Order
-                {
-                    OrderDate = (DateTime)orderDate,
-                    StaffId = int.Parse(staffId)
-                };
+                OrderDate = DateTime.Now,
+                StaffId = App.AccountStore.Id,
+            };
 
-                await _repository.AddAsync(order);
-                await _repository.SaveChangesAsync();
-                LoadData();
-            }
-            else
-            {
-                if (string.IsNullOrEmpty(tbStaffId.Text))
-                {
-                    MessageBox.Show("Please fill all fields.");
-                    return;
-                }
-                if (!int.TryParse(tbStaffId.Text, out int staffIdParsed))
-                {
-                    MessageBox.Show($"Invalid Staff ID. Found \"{tbStaffId.Text}\".");
-                    return;
-                }
-                if (!int.TryParse(orderId, out int orderIdParsed))
-                {
-                    MessageBox.Show($"ID must be a number. Found \"{orderId}\".");
-                }
-                var exOrder = await _repository.Context.Set<Order>().Where(o => o.OrderId == orderIdParsed).FirstOrDefaultAsync();
-                if (exOrder != null)
-                {
-                    exOrder.OrderDate = (DateTime)orderDate;
-                    exOrder.StaffId = staffIdParsed;
-                    await _repository.SaveChangesAsync();
-                    LoadData();
-                }
-                else
-                {
-                    MessageBox.Show("Order ID not found.");
-                    return;
-                }
-            }
+            await _repository.AddAsync(order);
+            await _repository.SaveChangesAsync();
+            LoadData();
         }
 
         private void LoadDetails(Order order)
@@ -167,10 +100,6 @@ namespace WPFAssignment1Group3
             var selectedOrder = lvOrders.SelectedItem as Order;
             if (selectedOrder != null)
             {
-                tbOrderId.Text = selectedOrder.OrderId.ToString();
-                dpOrderDate.SelectedDate = selectedOrder.OrderDate;
-                tbStaffId.Text = selectedOrder.StaffId.ToString();
-
                 tbOrderDId.Text = selectedOrder.OrderId.ToString();
             }
             LoadDetails(selectedOrder);
@@ -190,7 +119,7 @@ namespace WPFAssignment1Group3
                         _repository.Context.Set<OrderDetail>().Remove(exOrderDetail);
                         await _repository.SaveChangesAsync();
 
-                        LoadDetails(await _repository.Context.Set<Order>().Where(o => o.OrderId == orderId).FirstOrDefaultAsync());
+                        LoadDetails(await _repository.Context.Set<Order>().Where(o => o.OrderId == orderId && o.StaffId == App.AccountStore.Id).FirstOrDefaultAsync());
                     }
                     else
                     {
@@ -210,7 +139,7 @@ namespace WPFAssignment1Group3
             }
         }
 
-        private async void btnSave_Click(object sender, RoutedEventArgs e)
+        private async void btnAddDetail_Click(object sender, RoutedEventArgs e)
         {
             var orderDetailId = tbOrderDetailId.Text;
             var orderId = tbOrderDId.Text;
@@ -218,45 +147,32 @@ namespace WPFAssignment1Group3
             var quantity = tbQuantity.Text;
             var unitPrice = tbUnitPrice.Text;
 
-            if (string.IsNullOrEmpty(orderDetailId))
+            if (!int.TryParse(orderId, out int orderIdParsed) || !int.TryParse(productId, out int productIdParsed) || !int.TryParse(quantity, out int quantityParsed) || !int.TryParse(unitPrice, out int unitPriceParsed))
             {
-                if (!int.TryParse(orderId, out int orderIdParsed) || !int.TryParse(productId, out int productIdParsed) || !int.TryParse(quantity, out int quantityParsed) || !int.TryParse(unitPrice, out int unitPriceParsed))
-                {
-                    MessageBox.Show("Please enter valid number for these fields: Order ID, Product ID, Quantity, Unit Price.");
-                    return;
-                }
-                if (string.IsNullOrEmpty(productId) || string.IsNullOrEmpty(orderId) || string.IsNullOrEmpty(quantity) || string.IsNullOrEmpty(unitPrice))
-                {
-                    MessageBox.Show("Please fill all the fields and let Order Detail ID empty.");
-                    return;
-                }
-                OrderDetail detail = new OrderDetail
-                {
-                    OrderId = orderIdParsed,
-                    ProductId = productIdParsed,
-                    Quantity = quantityParsed,
-                    UnitPrice = unitPriceParsed
-                };
-                await _repository.Context.Set<OrderDetail>().AddAsync(detail);
-                await _repository.SaveChangesAsync();
-                LoadDetails(await _repository.Context.Set<Order>().Where(o => o.OrderId == orderIdParsed).FirstOrDefaultAsync());
+                MessageBox.Show("Please enter valid number for these fields: Order ID, Product ID, Quantity, Unit Price.");
+                return;
             }
-            else
+            if (string.IsNullOrEmpty(productId) || string.IsNullOrEmpty(orderId) || string.IsNullOrEmpty(quantity) || string.IsNullOrEmpty(unitPrice))
             {
+                MessageBox.Show("Please fill all the fields and let Order Detail ID empty.");
+                return;
+            }
+            OrderDetail detail = new OrderDetail
+            {
+                OrderId = orderIdParsed,
+                ProductId = productIdParsed,
+                Quantity = quantityParsed,
+                UnitPrice = unitPriceParsed
+            };
+            await _repository.Context.Set<OrderDetail>().AddAsync(detail);
+            await _repository.SaveChangesAsync();
+            LoadDetails(await _repository.Context.Set<Order>().Where(o => o.OrderId == orderIdParsed && o.StaffId == App.AccountStore.Id).FirstOrDefaultAsync());
 
-                if (!int.TryParse(orderDetailId, out int orderDetailIdParsed) || !int.TryParse(orderId, out int orderIdParsed) || !int.TryParse(productId, out int productIdParsed) || !int.TryParse(quantity, out int quantityParsed) || !int.TryParse(unitPrice, out int unitPriceParsed))
-                {
-                    MessageBox.Show("Please enter valid number for these fields: Order Detail ID, Order ID, Product ID, Quantity, Unit Price.");
-                    return;
-                }
-                var exDetail = await _repository.Context.Set<OrderDetail>().Where(o => o.OrderDetailId == orderDetailIdParsed).FirstOrDefaultAsync();
-                exDetail.OrderId = orderIdParsed;
-                exDetail.ProductId = productIdParsed;
-                exDetail.Quantity = quantityParsed;
-                exDetail.UnitPrice = unitPriceParsed;
-                await _repository.SaveChangesAsync();
-                LoadDetails(await _repository.Context.Set<Order>().Where(o => o.OrderId == orderIdParsed).FirstOrDefaultAsync());
-            }
+            tbOrderDetailId.Text = "";
+            tbOrderDId.Text = "";
+            tbProductId.Text = "";
+            tbQuantity.Text = "";
+            tbUnitPrice.Text = "";
         }
 
         private void lvOrderDetails_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -265,7 +181,6 @@ namespace WPFAssignment1Group3
             if (selectedDetail != null)
             {
                 tbOrderDetailId.Text = selectedDetail.OrderDetailId.ToString();
-                tbOrderDId.Text = selectedDetail.OrderId.ToString();
                 tbProductId.Text = selectedDetail.ProductId.ToString();
                 tbQuantity.Text = selectedDetail.Quantity.ToString();
                 tbUnitPrice.Text = selectedDetail.UnitPrice.ToString();
@@ -288,6 +203,61 @@ namespace WPFAssignment1Group3
                     tbUnitPrice.Text = "-";
                 }
             }
+        }
+
+        private async void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            var date = dpDate.SelectedDate;
+            try
+            {
+                //Get date from DatePicker
+                if (IsValidSelectedDate())
+                {
+                    date = dpDate.SelectedDate.Value;
+                }
+                else
+                {
+                    MessageBox.Show("Your date input is invalid.");
+                    return;
+                }
+
+                //Load Orders which have OrderDate is chosen date from DB
+                IQueryable<Order> orders = _repository.Context.Set<Order>().Where(o => o.OrderDate.Date == date && o.StaffId == App.AccountStore.Id);
+
+                //Display Orders in ListView
+                lvOrders.ItemsSource = await orders.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occured: {ex.Message}");
+            }
+        }
+
+        private void btnResetFilter_Click(object sender, RoutedEventArgs e)
+        {
+            dpDate.SelectedDate = DateTime.Now;
+            LoadData();
+        }
+
+        private async void btnEditDetail_Click(object sender, RoutedEventArgs e)
+        {
+            var orderDetailId = tbOrderDetailId.Text;
+            var orderId = tbOrderDId.Text;
+            var productId = tbProductId.Text;
+            var quantity = tbQuantity.Text;
+            var unitPrice = tbUnitPrice.Text;
+            if (!int.TryParse(orderDetailId, out int orderDetailIdParsed) || !int.TryParse(orderId, out int orderIdParsed) || !int.TryParse(productId, out int productIdParsed) || !int.TryParse(quantity, out int quantityParsed) || !int.TryParse(unitPrice, out int unitPriceParsed))
+            {
+                MessageBox.Show("Please enter valid number for these fields: Product ID, Quantity, Unit Price.");
+                return;
+            }
+            var exDetail = await _repository.Context.Set<OrderDetail>().Where(o => o.OrderDetailId == orderDetailIdParsed).FirstOrDefaultAsync();
+            exDetail.OrderId = orderIdParsed;
+            exDetail.ProductId = productIdParsed;
+            exDetail.Quantity = quantityParsed;
+            exDetail.UnitPrice = unitPriceParsed;
+            await _repository.SaveChangesAsync();
+            LoadDetails(await _repository.Context.Set<Order>().Where(o => o.OrderId == orderIdParsed && o.StaffId == App.AccountStore.Id).FirstOrDefaultAsync());
         }
     }
 }
