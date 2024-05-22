@@ -5,53 +5,49 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFAssignment1Group3"
         mc:Ignorable="d"
-        
-        Title="MainWindow" Height="500" Width="650">
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
+        Title="Store Management" Height="400" Width="600">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Height="30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <RadioButton Grid.Column="0" Content="Home"></RadioButton>
-            <RadioButton Grid.Column="1" Content="Home"></RadioButton>
-            <RadioButton Grid.Column="2" Content="Home"></RadioButton>
-            <RadioButton Grid.Column="3" Content="Home"></RadioButton>
+            <Button Grid.Column="0" Content="Order" Name="btnOrder" Click="btnOrder_Click"/>
+            <Button Grid.Column="1" Content="Product" Name="btnProduct" Click="btnProduct_Click"></Button>
+            <Button Grid.Column="2" Content="Staff" Name="btnStaff" Click="btnStaff_Click"></Button>
+            <Button Grid.Column="3" Content="Logout" Name="btnLogout" Click="btnLogout_Click"></Button>
         </Grid>
-        <Grid Grid.Row="1" Name="gridDetails">
+        <Grid Grid.Row="1" Name="gridDetails" Margin="0 20 0 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0">
+            <StackPanel Grid.Column="0" Margin="10">
                 <TextBlock Name="tbUsername"
-                            Text="AAA"
-                            FontSize="20" FontWeight="Bold"
-                            Margin="10"
-                            TextAlignment="Center"/>
+                            Text="Username"
+                            FontSize="20" FontWeight="Bold"/>
                 <TextBlock Name="tbRole"
                             Text="Admin"
-                            FontSize="10" 
-                            TextAlignment="Center"/>
+                            FontSize="10" />
             </StackPanel>
             <StackPanel Grid.Column="1">
-                <Button Name ="btnChangePass"
-                    Content="Change Password" Width="100" Height="30" Margin="10"/>
-                <Button Name="btnAddOrders"
-                Content="Add Orders" Width="100" Height="30" Margin="10" Click="btnAddOrders_Click"/>
-                <StackPanel >
-                    <Button Name="btnAddStaff"
-                    Content="Add Staff" Width="100" Height="30" Margin="10"/>
-                    <Button Name="btnAddProduct"
-                    Content="Add Product" Width="100" Height="30" Margin="10" Click="btnAddProduct_Click"/>
-                    <Button x:Name="Report" 
+                <Button x:Name="Report" 
                             Content="Report" Width="100" Height="30" Margin="10" Click="Report_Click"/>
+                <Button Name ="btnChangePass"
+                    Content="Change Password" Width="100" Height="30" Margin="0 10 0 0" Click="btnChangePass_Click"/>
+                <StackPanel Name="spChangePass"  Visibility="Hidden" Margin="20 10">
+                    <TextBox Name="tbPass" TextAlignment="Center" Margin="0 0 0 20"/>
+                    <TextBox Name="tbConfirm" TextAlignment="Center"/>
+                    <Button Name="btnConfirmChangePass"
+                        Content = "Change" Click="btnConfirmChangePass_Click"
+                        Margin="0 15 0 0"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

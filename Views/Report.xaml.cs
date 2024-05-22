@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using WPFAssignment1Group3.Common;
 using WPFAssignment1Group3.Models;
+using WPFAssignment1Group3.Views;
 
 namespace WPFAssignment1Group3
 {
@@ -44,13 +45,37 @@ namespace WPFAssignment1Group3
                 var defaultsearch = await _repository.Context.Set<Order>().Where(x => x.OrderDate < currentTime && x.OrderDate > currentTime.AddMonths(-1) && x.StaffId == App.AccountStore.Id).ToListAsync();
                 listViewOrder.ItemsSource = defaultsearch;
             }
+            startDate.SelectedDate = currentTime.AddMonths(-1);
+            endDate.SelectedDate = currentTime;
         }
 
         private async void DatePicker_SelectedDateChanged(object sender, SelectionChangedEventArgs e)
         {
+            
+        }
+
+        private async void listViewOrder_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            //show dialog display order detail
+            if (listViewOrder.SelectedItem != null)
+            {
+
+                Order order = listViewOrder.SelectedItem as Order;
+                int orderId = order.OrderId;
+                var data = await _repository.Context.Set<OrderDetail>().Where(x => x.OrderId == orderId).ToListAsync();
+                listDetail.ItemsSource = data;
+                UpdateOrderHeader();
+                UpdateOrderDetailHeader();
+            }
+        }
+
+        private async void btnFilter_Click(object sender, RoutedEventArgs e)
+        {
             if (startDate.SelectedDate == null || endDate.SelectedDate == null)
             {
                 listViewOrder.ItemsSource = null;
+                UpdateOrderHeader();
+                UpdateOrderDetailHeader();
                 return;
             }
             IQueryable<Order> data = _repository.Context.Set<Order>();
@@ -64,18 +89,41 @@ namespace WPFAssignment1Group3
             {
                 MessageBox.Show("Start date must be less than end date");
                 listViewOrder.ItemsSource = null;
+                UpdateOrderHeader();
+                UpdateOrderDetailHeader();
                 return;
             }
             else if (start == end)
             {
                 var result = await data.Where(x => x.OrderDate.Date == start).ToListAsync();
                 listViewOrder.ItemsSource = result;
+                if(result.Count == 0)
+                {
+                    //reset order detail
+                    listDetail.ItemsSource = null;
+                }
             }
             else
             {
                 var result = await data.Where(x => x.OrderDate.Date >= start && x.OrderDate.Date <= end).ToListAsync();
                 listViewOrder.ItemsSource = result;
+                if (result.Count == 0)
+                {
+                    //reset order detail
+                    listDetail.ItemsSource = null;
+                }
             }
+            UpdateOrderHeader();
+            UpdateOrderDetailHeader();
+        }
+        private void UpdateOrderHeader()
+        {
+            groupBoxOrders.Header = $"Orders ({listViewOrder.Items.Count})";
+        }
+
+        private void UpdateOrderDetailHeader()
+        {
+            groupBoxOrderDetails.Header = $"Order Details ({listDetail.Items.Count})";
         }
     }
 }
