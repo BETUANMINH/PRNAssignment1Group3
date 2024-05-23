@@ -38,6 +38,12 @@ namespace WPFAssignment1Group3
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             String ConnectionStr = config.GetConnectionString("conn");
 
+            Console.WriteLine("Connection String:" + ConnectionStr);
+            if (string.IsNullOrEmpty(ConnectionStr))
+            {
+                throw new Exception("Connection string is null or empty.");
+            }
+
             services.AddDbContext<MyStoreContext>(options => options.UseSqlServer(ConnectionStr));
             try
             {
