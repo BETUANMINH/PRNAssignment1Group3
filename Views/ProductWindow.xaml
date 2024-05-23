@@ -5,58 +5,177 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFAssignment1Group3"
         mc:Ignorable="d"
-        Title="ProductWindow" Height="450" Width="800">
-    <Grid>
-        <!-- Labels and Textboxes for CRUD -->
-        <Label Content="Product ID:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtProductId" HorizontalAlignment="Left" Margin="100,10,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding Path=ProductId, Mode=OneWay}"
-                 DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
+        Title="ProductWindow" 
+        Height="700" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        >
+    <Window.Resources>
+        <Style TargetType="Label">
+            <Setter Property="Foreground" Value="DarkGray"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="FontWeight" Value="Medium"/>
+            <Setter Property="FontFamily" Value="Montserrat"/>
+        </Style>
+    </Window.Resources>
+    <Border CornerRadius="10"                    
+        BorderThickness="1">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Border.Background>
+            <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.Background>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition Width="25"/>
+                    <ColumnDefinition Width="25"/>
+                </Grid.ColumnDefinitions>
+                <!--header-->
+                <TextBlock Text="PRODUCT"
+                            Foreground="DarkGray"
+                            FontSize="14"
+                            FontFamily="Montserrat"
+                            Grid.Column="0"
+                            VerticalAlignment="Center"
+                            Margin="10,0,0,0"/>
+                <Button x:Name="btnMinimize"                           
+                            BorderThickness="0"
+                            Content="-"
+                            Foreground="White"
+                            FontSize="16"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            Grid.Column="1"
+                            Click="btnMinimize_Click">
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#28AEED"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#278BEF"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
 
-        <Label Content="Product Name:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtProductName" HorizontalAlignment="Left" Margin="100,40,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding Path=ProductName, Mode=OneWay}"
-                DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="18" Height="18"
+                                    CornerRadius="9"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                                    HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button x:Name="btnClose"                          
+                        BorderThickness="0"
+                        Content="X"
+                        Foreground="White"
+                        FontSize="12"
+                        FontFamily="Montserrat"
+                        Cursor="Hand"
+                        Grid.Column="2"
+                        Margin="0 0 5 0"
+                        Click="btnClose_Click">
 
-        <Label Content="Category ID:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtCategoryId" HorizontalAlignment="Left" Margin="100,70,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding Path=CategoryId, Mode=OneWay}"
-                 DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
+                    <Button.Style>
+                        <Style TargetType="Button">
+                            <Setter Property="Background" Value="#DA34AE"/>
+                            <Style.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Background" Value="#C62DAE"/>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
 
-        <Label Content="Unit Price:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtUnitPrice" HorizontalAlignment="Left" Margin="100,100,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding Path=UnitPrice, Mode=OneWay}"
-                 DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border Width="18" Height="18"
+                                    CornerRadius="9"
+                                    Background="{TemplateBinding Background}">
+                                <ContentPresenter VerticalAlignment="Center"
+                          HorizontalAlignment="Center"/>
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <!--content-->
+                <Grid>
+                    <!-- Labels and Textboxes for CRUD -->
+                    <Label Content="Product ID:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtProductId" IsReadOnly="True" HorizontalAlignment="Left" Margin="100,10,0,0" VerticalAlignment="Top" Width="200"
+             Text="{Binding Path=ProductId, Mode=OneWay}"
+             DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
 
-        <!-- Buttons for CRUD operations -->
-        <Button Content="Create" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="75" Click="CreateProduct"/>
-        <Button Content="Update" HorizontalAlignment="Left" Margin="90,140,0,0" VerticalAlignment="Top" Width="75" Click="UpdateProduct"/>
-        <Button Content="Delete" HorizontalAlignment="Left" Margin="170,140,0,0" VerticalAlignment="Top" Width="75" Click="DeleteProduct"/>
+                    <Label Content="Product Name:" HorizontalAlignment="Left" Margin="10,40,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtProductName" HorizontalAlignment="Left" Margin="100,40,0,0" VerticalAlignment="Top" Width="200"
+             Text="{Binding Path=ProductName, Mode=OneWay}"
+            DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
 
-        <!-- Search Section -->
-        <Label Content="Unit Price:" HorizontalAlignment="Left" Margin="320,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtSearchUnitPrice" HorizontalAlignment="Left" Margin="469,10,0,0" VerticalAlignment="Top" Width="200"/>
+                    <Label Content="Category ID:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
+                    <ComboBox x:Name="cbCategories" HorizontalAlignment="Left" Margin="100,70,0,0" VerticalAlignment="Top" Width="200"
+                              DisplayMemberPath="CategoryName"/>
 
-        <Label Content="Prodcut Name:" HorizontalAlignment="Left" Margin="320,40,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtSearchName" HorizontalAlignment="Left" Margin="469,40,0,0" VerticalAlignment="Top" Width="200"/>
+                    <Label Content="Unit Price:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtUnitPrice" HorizontalAlignment="Left" Margin="100,100,0,0" VerticalAlignment="Top" Width="200"
+             Text="{Binding Path=UnitPrice, Mode=OneWay}"
+             DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
 
-        <Button Content="Search" HorizontalAlignment="Left" Margin="469,81,0,0" VerticalAlignment="Top" Width="75" Click="SearchProduct"/>
+                    <!-- Buttons for CRUD operations -->
+                    <Button Content="Create" HorizontalAlignment="Left" Margin="10,140,0,0" VerticalAlignment="Top" Width="75" Click="CreateProduct"/>
+                    <Button Content="Update" HorizontalAlignment="Left" Margin="90,140,0,0" VerticalAlignment="Top" Width="75" Click="UpdateProduct"/>
+                    <Button Content="Delete" HorizontalAlignment="Left" Margin="170,140,0,0" VerticalAlignment="Top" Width="75" Click="DeleteProduct"/>
 
-        <!-- Data Grid to display products -->
-        <ListView Name="lvProducts" Margin="0,187,10,10" >
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Product ID"  Width="100" 
-                            DisplayMemberBinding="{Binding Path=ProductId}"/>
-                    <GridViewColumn Header="Product Name" Width="200"
-                            DisplayMemberBinding="{Binding Path=ProductName}"/>
-                    <GridViewColumn Header="Category ID" Width="100"
-                                    DisplayMemberBinding="{Binding Path=CategoryId}"/>
-                    <GridViewColumn Header="Unit Price" Width="100"
-                                    DisplayMemberBinding="{Binding Path=UnitPrice}"/>
+                    <!-- Search Section -->
+                    <Label Content="Unit Price:" HorizontalAlignment="Left" Margin="320,10,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtSearchUnitPrice" HorizontalAlignment="Left" Margin="469,10,0,0" VerticalAlignment="Top" Width="200"/>
 
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
+                    <Label Content="Product Name:" HorizontalAlignment="Left" Margin="320,40,0,0" VerticalAlignment="Top"/>
+                    <TextBox x:Name="txtSearchName" HorizontalAlignment="Left" Margin="469,40,0,0" VerticalAlignment="Top" Width="200"/>
+
+                    <Button Content="Search" HorizontalAlignment="Left" Margin="469,81,0,0" VerticalAlignment="Top" Width="75" Click="SearchProduct"/>
+
+                    <!-- Data Grid to display products -->
+                    <ListView Name="lvProducts" Margin="0,187,10,10" Background="{StaticResource color5}" SelectionChanged="lvProducts_SelectionChanged">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn Header="Product ID"  Width="100" 
+                        DisplayMemberBinding="{Binding Path=ProductId}"/>
+                                <GridViewColumn Header="Product Name" Width="200"
+                        DisplayMemberBinding="{Binding Path=ProductName}"/>
+                                <GridViewColumn Header="Category ID" Width="100"
+                                DisplayMemberBinding="{Binding Path=CategoryId}"/>
+                                <GridViewColumn Header="Unit Price" Width="100"
+                                DisplayMemberBinding="{Binding Path=UnitPrice}"/>
+
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
+            </Grid>
+
+        </Grid>
+    </Border>
+
 </Window>

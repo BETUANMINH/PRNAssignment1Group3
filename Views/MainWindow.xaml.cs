@@ -40,7 +40,15 @@ namespace WPFAssignment1Group3
             base.OnActivated(e);
 
             tbUsername.Text = $"Username: {App.AccountStore.Username}";
+            tbSmallName.Text = $"{App.AccountStore.Username}";
             var role = (App.AccountStore.role == 0) ? StaffRole.Admin.ToString() : StaffRole.Staff.ToString();
+            if (role.Equals(StaffRole.Staff.ToString()))
+            {
+                btnProduct.Visibility = Visibility.Hidden;
+                btnStaff.Visibility = Visibility.Hidden;
+            }else if(role.Equals(StaffRole.Admin.ToString())) {
+                btnOrders.Visibility = Visibility.Hidden;
+            }
             tbRole.Text = $"Role: {role}";
         }
         protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
@@ -77,7 +85,7 @@ namespace WPFAssignment1Group3
 
         private async void btnConfirmChangePass_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrEmpty(tbPass.Text) || string.IsNullOrEmpty(tbConfirm.Text))
+            if (string.IsNullOrEmpty(tbPass.Password) || string.IsNullOrEmpty(tbConfirm.Password))
             {
                 MessageBox.Show("Can not empty");
             }
@@ -85,11 +93,11 @@ namespace WPFAssignment1Group3
             var confirmChange = MessageBox.Show("Change Password ?", "Change Password", MessageBoxButton.YesNo);
             if (confirmChange == MessageBoxResult.Yes)
             {
-                var result = await _authenticator.ChangePass(tbPass.Text, tbConfirm.Text);
+                var result = await _authenticator.ChangePass(tbPass.Password, tbConfirm.Password);
                 if (result)
                 {
                     MessageBox.Show("Successfully!");
-                    tbPass.Text = tbConfirm.Text = "";
+                    tbPass.Password = tbConfirm.Password = "";
                     spChangePass.Visibility = Visibility.Hidden;
                 }
                 else
@@ -140,6 +148,23 @@ namespace WPFAssignment1Group3
             Login login = new Login(_authenticator, _repository, _staffServices);
             login.Show();
             this.Close();
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void btnMaximize_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.WindowState == WindowState.Normal)
+                this.WindowState = WindowState.Maximized;
+            else this.WindowState = WindowState.Normal;
+        }
+
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
         }
     }
 }

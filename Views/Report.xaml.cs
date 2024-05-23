@@ -125,5 +125,15 @@ namespace WPFAssignment1Group3
         {
             groupBoxOrderDetails.Header = $"Order Details ({listDetail.Items.Count})";
         }
+
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

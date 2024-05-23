@@ -36,24 +36,39 @@ namespace WPFAssignment1Group3.Views
 
         private async void btnLogin_Click(object sender, RoutedEventArgs e)
         {
-            var result = await _authenticator.Login(txtUsername.Text, txtPassword.Text);
+            btnLogin.IsEnabled = false; 
+            var result = await _authenticator.Login(txtUsername.Text, txtPassword.Password);
             if(result)
             {
-                txtArlet.Text = "Success";
                 MainWindow mainWindow = new MainWindow(_repository, _authenticator, _staffServices);
                 mainWindow.Show();
                 this.Close();
             }else
             {
                 txtArlet.Text = "Fail";
+                btnLogin.IsEnabled = true; 
             }
-            btnLogin.IsEnabled = true;
-
             txtArlet.Visibility = Visibility.Visible;
         }
         protected override void OnActivated(EventArgs e)
         {
             base.OnActivated(e);
+        }
+
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
         }
     }
 }

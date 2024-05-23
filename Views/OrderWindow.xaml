@@ -6,133 +6,454 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFAssignment1Group3"
         mc:Ignorable="d"
-        Title="OrderWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
-
-        <!--Form to search records by date-->
-        <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Background="LightBlue" Orientation="Vertical">
-            <Label Content="Search Order by Date" FontSize="14" FontWeight="Bold" Margin="0"></Label>
-            <Grid Margin="10">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Date" Grid.Column="0"></Label>
-                <DatePicker x:Name="dpDate" Width="120" Grid.Column="1" HorizontalAlignment="Left" SelectedDateChanged="dpDate_SelectedDateChanged"/>
-            </Grid>
-        </StackPanel>
-
-        <!--Form to add/modify Order-->
-        <StackPanel Grid.Row="0" Grid.Column="2" Background="LightBlue" Orientation="Vertical">
-            <Label Content="Order Form" FontSize="14" FontWeight="Bold" Margin="0"/>
-            <Grid Margin="10">
+        Height="700" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        >
+    <Border CornerRadius="10"                    
+        BorderThickness="1">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Border CornerRadius="10"
+                BorderThickness="2"
+                Opacity="0.95">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                    <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.75"/>
+                    <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
+                    <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <!-- header-->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="ORDERS"
+                                Foreground="DarkGray"
+                                FontSize="14"
+                                FontFamily="Montserrat"
+                                Grid.Column="0"
+                                VerticalAlignment="Center"
+                                Margin="10,0,0,0"/>
 
-                <Label Content="Order ID" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="tbOrderId" Width="120" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"/>
+                    <Button x:Name="btnMinimize"                           
+                                BorderThickness="0"
+                                Content="-"
+                                Foreground="White"
+                                FontSize="16"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"
+                                Grid.Column="1"
+                                Click="btnMinimize_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#28AEED"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#278BEF"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
 
-                <Label Content="Order Date" Grid.Row="1" Grid.Column="0"/>
-                <DatePicker x:Name="dpOrderDate" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"/>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="18" Height="18"
+                                        CornerRadius="9"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button x:Name="btnClose"                          
+                            BorderThickness="0"
+                            Content="X"
+                            Foreground="White"
+                            FontSize="12"
+                            FontFamily="Montserrat"
+                            Cursor="Hand"
+                            Grid.Column="2"
+                            Margin="0 0 5 0"
+                            Click="btnClose_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#DA34AE"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#C62DAE"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
 
-                <Label Content="Staff ID" Grid.Row="2" Grid.Column="0"/>
-                <TextBox x:Name="tbStaffId" Width="120" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left"/>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="18" Height="18"
+                                        CornerRadius="9"
+                                        Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+                <!-- end header-->
+                <Grid Grid.Row="1" Background="Transparent">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
 
-                <Button Content="Submit" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left" Click="btnSubmit_Click"/>
+                    <!--Form to search records by date-->
+                    <StackPanel Grid.Row="0" Grid.ColumnSpan="2" Background="{StaticResource panelColor}" Orientation="Vertical">
+                        <Label Content="Search Order by Date" FontSize="14" FontWeight="Bold" Margin="0" Foreground="{StaticResource color8}"></Label>
+                        <Grid Margin="10">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"></RowDefinition>
+                                <RowDefinition Height="*"></RowDefinition>
+                            </Grid.RowDefinitions>
+                            <Label Content="Date" Grid.Column="0" Foreground="LightGray"/>
+                            <DatePicker x:Name="dpDate" Width="120" 
+                                        Grid.Row="0"
+                                        Grid.Column="1" 
+                                        HorizontalAlignment="Left" 
+                                        Foreground="LightGray"/>
+                            <Button 
+                                    Name="btnSearch"
+                                    Content="Search" 
+                                    Grid.Row="1" 
+                                    Grid.Column="2" 
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"          
+                                    Margin="0 10 0 0"
+                                    Click="btnSearch_Click">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#462AD8"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#28AEED"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="100" Height="35"
+                                            CornerRadius="20"
+                                            Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button 
+                                    Name="btnResetFilter"
+                                    Content="Reset filter" 
+                                    Grid.Row="1" 
+                                    Grid.Column="3" 
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Margin="0 10 0 0"
+                                    Cursor="Hand"                           
+                                    Click="btnResetFilter_Click">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#462AD8"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#28AEED"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="100" Height="35"
+                                            CornerRadius="20"
+                                            Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button 
+                                    Name="btnAddOrders"
+                                    Content="Add new Order" 
+                                    Grid.Row="1" 
+                                    Grid.Column="1" 
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Margin="0 10 0 0"
+                                    Cursor="Hand"                           
+                                    Click="btnAddOrder_Click">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#462AD8"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#28AEED"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="100" Height="35"
+                                            CornerRadius="20"
+                                            Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                        HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+                    <!--Form to add/modify Order Details-->
+                    <StackPanel Grid.Row="0" Grid.ColumnSpan="2" 
+                                Grid.Column="2"
+                                Orientation="Vertical" 
+                                Background="{StaticResource panelColor}">
+                        <Label Content="Order Detail Form" FontSize="14" FontWeight="Bold" 
+                               Margin="0" 
+                               Foreground="{StaticResource color8}"/>
+                        <Grid Margin="10">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Label Content="Order Detail ID" Grid.Row="0" Grid.Column="0" Foreground="LightGray"/>
+                            <TextBox x:Name="tbOrderDetailId" Width="120" Grid.Row="0" Grid.Column="1" 
+                                    FontSize="13"
+                                    FontWeight="Medium"
+                                    FontFamily="Montserrat"                            
+                                    Background="Transparent"
+                                    Foreground="White"
+                                    CaretBrush="LightGray"
+                                    BorderBrush="DarkGray"
+                                    BorderThickness="0,0,0,2"
+                                    Height="28"
+                                    VerticalContentAlignment="Center"
+                                    Margin="0,5,0,0"
+                                    Padding="20,0,0,0"/>
+
+                            <Label Content="Order ID" Grid.Row="1" Grid.Column="0" Foreground="LightGray"/>
+                            <TextBox x:Name="tbOrderDId" Width="120" Grid.Row="1" Grid.Column="1" 
+                                                                         FontSize="13"
+                                    FontWeight="Medium"
+                                    FontFamily="Montserrat"                            
+                                    Background="Transparent"
+                                    Foreground="White"
+                                    CaretBrush="LightGray"
+                                    BorderBrush="DarkGray"
+                                    BorderThickness="0,0,0,2"
+                                    Height="28"
+                                    VerticalContentAlignment="Center"
+                                    Margin="0,5,0,0"
+                                    Padding="20,0,0,0"/>
+
+                            <Label Content="Product ID" Grid.Row="2" Grid.Column="0" Foreground="LightGray"/>
+                            <TextBox x:Name="tbProductId" Width="120" Grid.Row="2" Grid.Column="1"                                   
+                                    FontSize="13"
+                                    FontWeight="Medium"
+                                    FontFamily="Montserrat"                            
+                                    Background="Transparent"
+                                    Foreground="White"
+                                    CaretBrush="LightGray"
+                                    BorderBrush="DarkGray"
+                                    BorderThickness="0,0,0,2"
+                                    Height="28"
+                                    VerticalContentAlignment="Center"
+                                    Margin="0,5,0,0"
+                                    Padding="20,0,0,0" 
+                                     TextChanged="tbProductId_TextChanged"/>
+
+                            <Label Content="Quantity" Grid.Row="3" Grid.Column="0" Foreground="LightGray"/>
+                            <TextBox x:Name="tbQuantity" Width="120" Grid.Row="3" Grid.Column="1"
+                                    FontSize="13"
+                                    FontWeight="Medium"
+                                    FontFamily="Montserrat"                            
+                                    Background="Transparent"
+                                    Foreground="White"
+                                    CaretBrush="LightGray"
+                                    BorderBrush="DarkGray"
+                                    BorderThickness="0,0,0,2"
+                                    Height="28"
+                                    VerticalContentAlignment="Center"
+                                    Margin="0,5,0,0"
+                                    Padding="20,0,0,0" />
+
+                            <Label Content="Unit Price" Grid.Row="4" Grid.Column="0" Foreground="LightGray"/>
+                            <TextBlock x:Name="tbUnitPrice" Width="120" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left"/>
+
+
+                            <Button Content="Add Detail" Grid.Row="5" Grid.Column="0" HorizontalAlignment="Left" 
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"                           
+                                    Margin="0,30,0,0"
+                                    Click="btnAddDetail_Click"
+                                    >
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#462AD8"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#28AEED"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="150" Height="40"
+                                                CornerRadius="20"
+                                                Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                              HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button Content="Edit Detail" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" 
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"                           
+                                    Margin="0,30,0,0"
+                                    Click="btnEditDetail_Click"
+                                    >
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#462AD8"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#28AEED"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="150" Height="40"
+                                                CornerRadius="20"
+                                                Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                              HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                        </Grid>
+                    </StackPanel>
+
+                    <!--List view for Order records-->
+                    <ListView x:Name="lvOrders" Grid.Row="1" Grid.ColumnSpan="2" SelectionChanged="lvOrders_SelectionChanged" 
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              Background="{StaticResource color5}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn x:Name="gvcOrderId" Header="Order ID" DisplayMemberBinding="{Binding OrderId}"/>
+                                <GridViewColumn Header="Order Date" DisplayMemberBinding="{Binding OrderDate}"/>
+                                <GridViewColumn Header="Staff ID" DisplayMemberBinding="{Binding StaffId}"/>
+                                <GridViewColumn Header="Actions">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Delete" Click="btnDelete_Click" Tag="{Binding OrderId}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+
+                    <!--List view for OrderDetails-->
+                    <ListView x:Name="lvOrderDetails" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" 
+                              SelectionChanged="lvOrderDetails_SelectionChanged" 
+                              ScrollViewer.VerticalScrollBarVisibility="Auto" 
+                              Background="{StaticResource color5}">
+                        <ListView.View>
+                            <GridView>
+                                <GridViewColumn x:Name="gvcOrderDetailId" Header="Order Detail ID" DisplayMemberBinding="{Binding OrderDetailId}"/>
+                                <GridViewColumn Header="Order ID" DisplayMemberBinding="{Binding OrderId}"/>
+                                <GridViewColumn Header="Product ID" DisplayMemberBinding="{Binding ProductId}"/>
+                                <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
+                                <GridViewColumn Header="Unit Price" DisplayMemberBinding="{Binding UnitPrice}"/>
+                                <GridViewColumn Header="Actions">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button Content="Delete" Click="btnDeleteDetail_Click" Tag="{Binding OrderDetailId}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
+                </Grid>
             </Grid>
-        </StackPanel>
+        </Border>
 
-        <!--Form to add/modify Order Details-->
-        <StackPanel Grid.Row="0" Grid.Column="3" Background="LightBlue" Orientation="Vertical">
-            <Label Content="Order Detail Form" FontSize="14" FontWeight="Bold" Margin="0"/>
-            <Grid Margin="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-
-                <Label Content="Order Detail ID" Grid.Row="0" Grid.Column="0"/>
-                <TextBox x:Name="tbOrderDetailId" Width="120" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left"/>
-
-                <Label Content="Order ID" Grid.Row="1" Grid.Column="0"/>
-                <TextBox x:Name="tbOrderDId" Width="120" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left"/>
-
-                <Label Content="Product ID" Grid.Row="2" Grid.Column="0"/>
-                <TextBox x:Name="tbProductId" Width="120" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" TextChanged="tbProductId_TextChanged"/>
-
-                <Label Content="Quantity" Grid.Row="3" Grid.Column="0"/>
-                <TextBox x:Name="tbQuantity" Width="120" Grid.Row="3" Grid.Column="1" HorizontalAlignment="Left"/>
-
-                <Label Content="Unit Price" Grid.Row="4" Grid.Column="0"/>
-                <TextBlock x:Name="tbUnitPrice" Width="120" Grid.Row="4" Grid.Column="1" HorizontalAlignment="Left"/>
-
-
-                <Button Content="Save" Grid.Row="5" Grid.Column="1" HorizontalAlignment="Left" Click="btnSave_Click"/>
-            </Grid>
-        </StackPanel>
-
-        <!--List view for Order records-->
-        <ListView x:Name="lvOrders" Grid.Row="1" Grid.ColumnSpan="2" SelectionChanged="lvOrders_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn x:Name="gvcOrderId" Header="Order ID" DisplayMemberBinding="{Binding OrderId}"/>
-                    <GridViewColumn Header="Order Date" DisplayMemberBinding="{Binding OrderDate}"/>
-                    <GridViewColumn Header="Staff ID" DisplayMemberBinding="{Binding StaffId}"/>
-                    <GridViewColumn Header="Actions">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Delete" Click="btnDelete_Click" Tag="{Binding OrderId}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-
-        <!--List view for OrderDetails-->
-        <ListView x:Name="lvOrderDetails" Grid.Row="1" Grid.Column="2" Grid.ColumnSpan="2" SelectionChanged="lvOrderDetails_SelectionChanged" ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn x:Name="gvcOrderDetailId" Header="Order Detail ID" DisplayMemberBinding="{Binding OrderDetailId}"/>
-                    <GridViewColumn Header="Order ID" DisplayMemberBinding="{Binding OrderId}"/>
-                    <GridViewColumn Header="Product ID" DisplayMemberBinding="{Binding ProductId}"/>
-                    <GridViewColumn Header="Quantity" DisplayMemberBinding="{Binding Quantity}"/>
-                    <GridViewColumn Header="Unit Price" DisplayMemberBinding="{Binding UnitPrice}"/>
-                    <GridViewColumn Header="Actions">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Button Content="Delete" Click="btnDeleteDetail_Click" Tag="{Binding OrderDetailId}"/>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
+    </Border>
 </Window>

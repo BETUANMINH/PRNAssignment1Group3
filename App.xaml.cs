@@ -42,7 +42,7 @@ namespace WPFAssignment1Group3
             try
             {
                 defAcc = config.GetSection("DefaultAdminCredentials").Get<DefaultAccount>();
-            }catch (Exception ex)
+            }catch (Exception)
             {
                 throw new Exception();
             }

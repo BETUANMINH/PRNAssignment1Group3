@@ -5,68 +5,400 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFAssignment1Group3.Views"
         mc:Ignorable="d"
-        Title="StaffWindow" Height="700" Width="458" Loaded="Window_Loaded" WindowStartupLocation="CenterOwner">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <StackPanel Background="LightBlue"  Orientation ="Vertical"  Grid.Row="0">
+        Title="StaffWindow"
+        Height="700" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        Loaded="Window_Loaded">
+    <Border CornerRadius="10"                    
+        BorderThickness="1">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Border CornerRadius="10"
+                BorderThickness="2"
+                Opacity="0.95">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                    <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.75"/>
+                    <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Border.Background>
+                <LinearGradientBrush StartPoint="0,1" EndPoint="1,0">
+                    <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
+                    <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
+                </LinearGradientBrush>
+            </Border.Background>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <!-- header-->
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="25"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="STAFF"
+                     Foreground="DarkGray"
+                     FontSize="14"
+                     FontFamily="Montserrat"
+                     Grid.Column="0"
+                     VerticalAlignment="Center"
+                     Margin="10,0,0,0"/>
 
-            <Label Name="lblInstruction" Foreground="Red" FontWeight="DemiBold" 
-                   FontSize="20" Content="Staff Information"/>
+                    <Button x:Name="btnMinimize"                           
+                     BorderThickness="0"
+                     Content="-"
+                     Foreground="White"
+                     FontSize="16"
+                     FontFamily="Montserrat"
+                     Cursor="Hand"
+                     Grid.Column="1"
+                     Click="btnMinimize_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#28AEED"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#278BEF"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
 
-            <Label Content="StaffId"/>
-            <TextBox Name="txtStaffID" HorizontalAlignment="Left" 
-                     IsReadOnly="True" Height="25" Width="400"
-                     Text="{Binding Path=StaffId, Mode=OneWay}" 
-                     DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="18" Height="18"
+                             CornerRadius="9"
+                             Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                    <Button x:Name="btnClose"                          
+                 BorderThickness="0"
+                 Content="X"
+                 Foreground="White"
+                 FontSize="12"
+                 FontFamily="Montserrat"
+                 Cursor="Hand"
+                 Grid.Column="2"
+                 Margin="0 0 5 0"
+                 Click="btnClose_Click">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Background" Value="#DA34AE"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="#C62DAE"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
 
-            <Label Content="Name" />
-            <TextBox Name="nameTxt" HorizontalAlignment="Left"
-                     Height="25" Width="400"  
-                     Text="{Binding Path=Name, Mode=OneWay}" 
-                     DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Width="18" Height="18"
+                             CornerRadius="9"
+                             Background="{TemplateBinding Background}">
+                                    <ContentPresenter VerticalAlignment="Center"
+                                             HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
+                </Grid>
+                <Grid Grid.Row="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Grid.Column="0" Margin="10 0">
+                            <Label Name="lblInstruction" Foreground="{StaticResource color1}" FontWeight="DemiBold" 
+                                    FontSize="20" Content="Staff Information"/>
 
-            <Label Content="Password"/>
-            <TextBox Name="passTxt" HorizontalAlignment="Left"
-                     Height="25" Width="400"  
-                     Text="{Binding Path=Password, Mode=OneWay}" 
-                     DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
+                            <Label Content="StaffId" 
+                               Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,5,0,0"/>
+                            <TextBox Name="txtStaffID" 
+                                     IsReadOnly="True"
+                                     FontSize="13"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="LightGray"
+                                     BorderBrush="DarkGray"
+                                     Background="Transparent"
+                                     BorderThickness="0,0,0,2"
+                                     Height="28"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     Margin="0,5,0,0"
+                                     Padding="20,0,0,0"
+                                     Width="400"
+                                     Text="{Binding Path=StaffId, Mode=OneWay}" 
+                                     DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
 
-            <Label Content="Role"/>
-            <TextBox Name="roleTxt" HorizontalAlignment="Left"
-                     Height="25" Width="400"  
-                     Text="{Binding Path=Role, Mode=OneWay}" 
-                     DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
+                            <Label Content="Name" 
+                               Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,5,0,0"/>
+                            <TextBox Name="nameTxt"
+                                      IsReadOnly="True"
+                                     FontSize="13"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="LightGray"
+                                     BorderBrush="DarkGray"
+                                     Background="Transparent"
+                                     BorderThickness="0,0,0,2"
+                                     Height="28"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     Margin="0,5,0,0"
+                                     Padding="20,0,0,0"
+                                     Width="400"
+                                    Text="{Binding Path=Name, Mode=OneWay}" 
+                                    DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
 
-            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Left">
-                <Button x:Name="btnInsert" Margin="10" Width="80" Content="Insert" Click="btnInsert_Click" 
-                       />
-                <Button x:Name="btnUpdate"  Margin="10" Width="80"  Content="Update" Click="btnUpdate_ClickAsync"
-                        />
-                <Button x:Name="btnDelete" Margin="10"  Width="80" Content="Delete" Click="btnDelete_Click"
-                         />
-            </StackPanel>
-        </StackPanel>
-        <StackPanel Grid.Row="1">
-            <Button x:Name="btnSearch" Margin="10"  Width="80" Content="Search" Click="btnSearch_Click"/>
-            <TextBox Name="txtSearch" Height="25" Width="300"  />
-        </StackPanel>
-        <ListView Grid.Row="2" Name="lvStaff" Margin="4,63,4,0">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn Header="Staff ID"  Width="100" 
-                                   DisplayMemberBinding="{Binding Path=StaffId}"/>
-                    <GridViewColumn Header="Name" Width="150"
-                                    DisplayMemberBinding="{Binding Path=Name}"/>
-                    <GridViewColumn Header="Password" Width="100"
-                                    DisplayMemberBinding="{Binding Path=Password}"/>
-                    <GridViewColumn Header="Role" Width="50"
-                                    DisplayMemberBinding="{Binding Path=Role}"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
-    </Grid>
+                            <Label Content="Password" 
+                                 Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,5,0,0"/>
+                            <TextBox Name="passTxt" 
+                                     IsReadOnly="True"
+                                     FontSize="13"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="LightGray"
+                                     BorderBrush="DarkGray"
+                                     Background="Transparent"
+                                     BorderThickness="0,0,0,2"
+                                     Height="28"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     Margin="0,5,0,0"
+                                     Padding="20,0,0,0"
+                                     Width="400"
+                                    Text="{Binding Path=Password, Mode=OneWay}" 
+                                    DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
+
+                            <Label Content="Role"       
+                               Foreground="DarkGray"
+                               FontSize="12"
+                               FontWeight="Medium"
+                               FontFamily="Montserrat"                             
+                               Margin="0,5,0,0"/>
+                            <TextBox Name="roleTxt" 
+                                     IsReadOnly="True"
+                                     FontSize="13"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="LightGray"
+                                     BorderBrush="DarkGray"
+                                     Background="Transparent"
+                                     BorderThickness="0,0,0,2"
+                                     Height="28"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     Margin="0,5,0,0"
+                                     Padding="20,0,0,0"
+                                     Width="400"
+                                    Text="{Binding Path=Role, Mode=OneWay}" 
+                                    DataContext="{Binding ElementName=lvStaff, Path=SelectedItem}"/>
+
+                                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Stretch" Margin="0 7 0 0">
+                                    <Button x:Name="btnInsert" Content="Insert" Click="btnInsert_Click" 
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            FontSize="12"
+                                            FontFamily="Montserrat"
+                                            Margin="15 0"
+                                            Cursor="Hand">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background" Value="#462AD8"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#28AEED"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="100" Height="35"
+                    CornerRadius="20"
+                    Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center"
+                                  HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button x:Name="btnUpdate" Content="Update" Click="btnUpdate_ClickAsync"
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            FontSize="12"
+                                            FontFamily="Montserrat"
+                                            Margin="15 0"
+                                            Cursor="Hand"
+                                            >
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background" Value="#462AD8"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#28AEED"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="100" Height="35"
+                                                        
+                                                        
+CornerRadius="20"
+Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center"
+              HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                    <Button x:Name="btnDelete" Content="Delete" Click="btnDelete_Click" 
+                                            BorderThickness="0"
+                                            Foreground="White"
+                                            FontSize="12"
+                                            FontFamily="Montserrat"
+                                            Margin="15 0"
+                                            Cursor="Hand">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Setter Property="Background" Value="#462AD8"/>
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter Property="Background" Value="#28AEED"/>
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Width="120" Height="40"
+CornerRadius="20"
+Background="{TemplateBinding Background}">
+                                                    <ContentPresenter VerticalAlignment="Center"
+              HorizontalAlignment="Center"/>
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="1">
+                                <Label Foreground="{StaticResource color1}" FontWeight="DemiBold" 
+                                        FontSize="20" Content="Search Staff"/>
+                                <TextBox Name="txtSearch" 
+                                     IsReadOnly="True"
+                                     FontSize="13"
+                                     FontWeight="Medium"
+                                     FontFamily="Montserrat"                            
+                                     Foreground="White"
+                                     CaretBrush="LightGray"
+                                     BorderBrush="DarkGray"
+                                     Background="Transparent"
+                                     BorderThickness="0,0,0,2"
+                                     Height="28"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalAlignment="Left"
+                                     Margin="0,5,0,0"
+                                     Padding="20,0,0,0"
+                                     Width="600"/>
+                                <Button x:Name="btnSearch" Content="Search" 
+                                         BorderThickness="0"
+                                         Foreground="White"
+                                         FontSize="12"
+                                         FontFamily="Montserrat"
+                                         Cursor="Hand"                           
+                                         Margin="0,30,0,0"
+                                        Click="btnSearch_Click">
+                                    <Button.Style>
+                                        <Style TargetType="Button">
+                                            <Setter Property="Background" Value="#462AD8"/>
+                                            <Style.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#28AEED"/>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Button.Style>
+
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Width="150" Height="40"
+                                                    CornerRadius="20"
+                                                    Background="{TemplateBinding Background}">
+                                                <ContentPresenter VerticalAlignment="Center"
+                                                    HorizontalAlignment="Center"/>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </StackPanel>
+                        </Grid>
+
+                        <ListView Grid.Row="1" Name="lvStaff"  Margin="0 10" Background="{StaticResource color5}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="Staff ID"  Width="100" 
+                               DisplayMemberBinding="{Binding Path=StaffId}"/>
+                                    <GridViewColumn Header="Name" Width="150"
+                                DisplayMemberBinding="{Binding Path=Name}"/>
+                                    <GridViewColumn Header="Password" Width="100"
+                                DisplayMemberBinding="{Binding Path=Password}"/>
+                                    <GridViewColumn Header="Role" Width="50"
+                                DisplayMemberBinding="{Binding Path=Role}"/>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Border>
+    </Border>
+
 </Window>

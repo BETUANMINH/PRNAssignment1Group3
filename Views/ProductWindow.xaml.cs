@@ -33,19 +33,21 @@ namespace WPFAssignment1Group3
         {
             var products = _repository.Context.Set<Product>().ToList();
             lvProducts.ItemsSource = products;
+            cbCategories.ItemsSource = _repository.Context.Set<Category>().ToList();
         }
 
         private async void CreateProduct(object sender, RoutedEventArgs e)
         {
+            Category selectedCategory = cbCategories.SelectedItem as Category;
             var name = txtProductName.Text;
-            var categoryId = txtCategoryId.Text;
+            var categoryId = selectedCategory.CategoryId;
             var price = txtUnitPrice.Text;
-            if(string.IsNullOrEmpty(name) || string.IsNullOrEmpty(categoryId) || string.IsNullOrEmpty(price))
+            if (string.IsNullOrEmpty(name) || string.IsNullOrEmpty(price))
             {
                 MessageBox.Show("Please fill all fields");
                 return;
             }
-            if(!int.TryParse(categoryId, out int categoryIdParsed) || !int.TryParse(price, out int UnitPriceParsed))
+            if (!int.TryParse(price, out int UnitPriceParsed))
             {
                 MessageBox.Show("Please enter valid number");
                 return;
@@ -53,27 +55,29 @@ namespace WPFAssignment1Group3
             var product = new Product
             {
                 ProductName = name,
-                CategoryId = categoryIdParsed,
+                CategoryId = categoryId,
                 UnitPrice = UnitPriceParsed
             };
             await _repository.AddAsync(product);
             await _repository.SaveChangesAsync();
             LoadDeafaaultData();
+            MessageBox.Show("Add success");
 
         }
 
         private async void UpdateProduct(object sender, RoutedEventArgs e)
         {
+            Category selectedCategory = cbCategories.SelectedItem as Category;
             var id = txtProductId.Text;
             var name = txtProductName.Text;
-            var categoryId = txtCategoryId.Text;
+            var categoryId = selectedCategory.CategoryId;
             var price = txtUnitPrice.Text;
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(categoryId) || string.IsNullOrEmpty(price))
+            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(name) || string.IsNullOrEmpty(price))
             {
                 MessageBox.Show("Please fill all fields");
                 return;
             }
-            if (!int.TryParse(id, out int IdParsed) || !int.TryParse(categoryId, out int categoryIdParsed) || !int.TryParse(price, out int UnitPriceParsed))
+            if (!int.TryParse(id, out int IdParsed) || !int.TryParse(price, out int UnitPriceParsed))
             {
                 MessageBox.Show("Please enter valid number");
                 return;
@@ -87,16 +91,19 @@ namespace WPFAssignment1Group3
             }
             productExists.ProductId = IdParsed;
             productExists.ProductName = name;
-            productExists.CategoryId = categoryIdParsed;
+            productExists.CategoryId = categoryId;
             productExists.UnitPrice = UnitPriceParsed;
             await _repository.SaveChangesAsync();
+            LoadDeafaaultData();
+            MessageBox.Show("Update success");
+            ClearForm();
         }
 
         private async void SearchProduct(object sender, RoutedEventArgs e)
         {
             var unitPrice = txtSearchUnitPrice.Text;
             var ProductName = txtSearchName.Text;
-            if(!string.IsNullOrEmpty(unitPrice))
+            if (!string.IsNullOrEmpty(unitPrice))
             {
                 if (!int.TryParse(unitPrice, out int unitParsed))
                 {
@@ -113,7 +120,7 @@ namespace WPFAssignment1Group3
             {
                 products = products.Where(x => x.UnitPrice == int.Parse(unitPrice));
             }
-            
+
             lvProducts.ItemsSource = await products.ToListAsync();
         }
 
@@ -131,16 +138,49 @@ namespace WPFAssignment1Group3
                 MessageBox.Show("Please enter valid number");
                 return;
             }
-            //check product id exists
+            // Check if the product exists
             var productExists = await _repository.Context.Set<Product>().Where(x => x.ProductId == IdParsed).FirstOrDefaultAsync();
             if (productExists == null)
             {
                 MessageBox.Show("Product not Found");
                 return;
             }
-            _repository.Delete(productExists);
-            await _repository.SaveChangesAsync();
-            LoadDeafaaultData();
+
+            // Show confirmation dialog
+            var result = MessageBox.Show("Are you sure you want to delete this product?", "Confirm Delete", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result == MessageBoxResult.Yes)
+            {
+                // Proceed with deletion
+                _repository.Delete(productExists);
+                await _repository.SaveChangesAsync();
+                LoadDeafaaultData();
+                MessageBox.Show("Delete success");
+            }
+        }
+
+        private void btnMinimize_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void btnClose_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void lvProducts_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var selectedProduct = lvProducts.SelectedItem as Product;
+            if (selectedProduct != null)
+            {
+                var category = selectedProduct.Category;
+                cbCategories.SelectedItem = category;
+            }
+        }
+        private void ClearForm()
+        {
+            lvProducts.SelectedItem = null;
+            cbCategories.SelectedItem = null;
         }
     }
 }

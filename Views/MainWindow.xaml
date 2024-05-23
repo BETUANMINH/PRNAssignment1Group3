@@ -4,53 +4,351 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFAssignment1Group3"
+        xmlns:fa="http://schemas.fontawesome.io/icons/"
         mc:Ignorable="d"
-        ResizeMode="NoResize" WindowStartupLocation="CenterScreen"
-        Title="Store Management" Height="400" Width="600">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid Grid.Row="0" Height="30">
+        Title="MainWindowView" 
+        Height="700" Width="1300"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        Background="Transparent"
+        AllowsTransparency="True"
+        >
+    <Border CornerRadius="10"                    
+            BorderThickness="1">
+        <Border.BorderBrush>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="{StaticResource winBorderColor1}" Offset="0"/>
+                <GradientStop Color="{StaticResource winBorderColor2}" Offset="0.5"/>
+                <GradientStop Color="{StaticResource winBorderColor3}" Offset="1"/>
+            </LinearGradientBrush>
+        </Border.BorderBrush>
+        <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
+                <!--Navigation menu-->
+                <ColumnDefinition Width="250"/>
+                <!--Content section-->
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Button Grid.Column="0" Content="Order" Name="btnOrder" Click="btnOrder_Click"></Button>
-            <Button Grid.Column="1" Content="Product" Name="btnProduct" Click="btnProduct_Click"></Button>
-            <Button Grid.Column="2" Content="Staff" Name="btnStaff" Click="btnStaff_Click"></Button>
-            <Button Grid.Column="3" Content="Logout" Name="btnLogout" Click="btnLogout_Click"></Button>
-        </Grid>
-        <Grid Grid.Row="1" Name="gridDetails" Margin="0 20 0 0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <StackPanel Grid.Column="0" Margin="10">
-                <TextBlock Name="tbUsername"
-                            Text="Username"
-                            FontSize="20" FontWeight="Bold"/>
-                <TextBlock Name="tbRole"
-                            Text="Admin"
-                            FontSize="10" />
-            </StackPanel>
-            <StackPanel Grid.Column="1">
-                <Button x:Name="Report" 
-                            Content="Report" Width="100" Height="30" Margin="10" Click="Report_Click"/>
-                <Button Name ="btnChangePass"
-                    Content="Change Password" Width="100" Height="30" Margin="0 10 0 0" Click="btnChangePass_Click"/>
-                <StackPanel Name="spChangePass"  Visibility="Hidden" Margin="20 10">
-                    <TextBox Name="tbPass" TextAlignment="Center" Margin="0 0 0 20"/>
-                    <TextBox Name="tbConfirm" TextAlignment="Center"/>
-                    <Button Name="btnConfirmChangePass"
-                        Content = "Change" Click="btnConfirmChangePass_Click"
-                        Margin="0 15 0 0"/>
+            <!-- side bar-->
+            <Border CornerRadius="10,0,0,10"
+                    Grid.Column="0">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0,0" EndPoint="1,0.7">
+                        <GradientStop Color="{StaticResource secondaryBackColor1}" Offset="0"/>
+                        <GradientStop Color="{StaticResource secondaryBackColor2}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel>
+
+                    <!--Logo-->
+                    <StackPanel Orientation="Horizontal"
+                                Height="80"
+                                Margin="15,25,0,40">
+
+                        <Image Source="/static/image/store-management.png" Height="80"/>
+                        <TextBlock Text="Store"
+                                   Foreground="{StaticResource titleColor2}"
+                                   FontSize="30"
+                                   FontFamily="Montserrat"
+                                   FontWeight="Medium"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"/>
+                    </StackPanel>
+
+                    <!--Menu Buttons-->
+                    <!--orders, product, staff, logout, report-->
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color1}"
+                                 IsChecked="True"
+                                 >
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="Home" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Dashboard" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color2}" 
+                                 Click="Report_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="FileArchiveOutline" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Report" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Name="btnProduct"
+                                 Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color3}"
+                                 Click="btnProduct_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="CartPlus" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Product" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton x:Name="btnStaff"
+                                 Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color4}"
+                                 Click="btnStaff_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="User" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Staff" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Name="btnOrders"
+                                 Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color5}"
+                                 Click="btnOrder_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="FirstOrder" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Orders" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
+                    <RadioButton Style="{StaticResource menuButton}"
+                                 Tag="{StaticResource color6}"
+                                 Click="btnLogout_Click">
+                        <StackPanel Orientation="Horizontal">
+                            <fa:ImageAwesome Icon="SignOut" Style="{StaticResource menuButtonIcon}"/>
+                            <TextBlock Text="Logout" Style="{StaticResource menuButtonText}"/>
+                        </StackPanel>
+                    </RadioButton>
                 </StackPanel>
-            </StackPanel>
+            </Border>
+            <!-- end nav -->
+            <!-- main section -->
+            <Border CornerRadius="0,10,10,0"
+                    Grid.Column="1">
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="1,1" EndPoint="0,0">
+                        <GradientStop Color="{StaticResource primaryBackColor1}" Offset="0"/>
+                        <GradientStop Color="{StaticResource primaryBackColor2}" Offset="1"/>
+                    </LinearGradientBrush>
+                </Border.Background>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <!--Control bar-->
+                        <RowDefinition Height="25"/>
+                        <!--Header / Caption-->
+                        <RowDefinition Height="35"/>
+                        <!--Content section / Child views-->
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <!-- control bar-->
+                    <StackPanel x:Name="pnlControlBar"
+                                Grid.Row="0"
+                                Orientation="Horizontal"
+                                FlowDirection="RightToLeft"
+                                Background="Transparent"
+                                Margin="0,0,5,0">
+                        <Button x:Name="btnClose"
+                                Style="{StaticResource controlButton}"
+                                Tag="{StaticResource color4}"
+                                Click="btnClose_Click">
+                            <fa:ImageAwesome Icon="Close" Style="{StaticResource controlButtonIcon}"/>
+                        </Button>
+                        <Button x:Name="btnMaximize"
+                                Style="{StaticResource controlButton}"
+                                Tag="{StaticResource color6}"
+                                Click="btnMaximize_Click">
+                            <fa:ImageAwesome Icon="Square" Style="{StaticResource controlButtonIcon}"/>
+                        </Button>
+                        <Button x:Name="btnMinimize"
+                                Style="{StaticResource controlButton}"
+                                Tag="{StaticResource color8}"
+                                Click="btnMinimize_Click">
+                            <fa:ImageAwesome Icon="WindowMinimize" Width="12" Style="{StaticResource controlButtonIcon}"/>
+                        </Button>
+                    </StackPanel>
+                    <!-- header, caption -->
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+
+                        <!--Caption-->
+                        <StackPanel Grid.Column="0"
+                                    Orientation="Horizontal"
+                                    VerticalAlignment="Center">
+                            <fa:ImageAwesome Icon="User"
+                                          Height="20"
+                                          Width="20"
+                                          Foreground="{StaticResource titleColor2}"
+                                          Margin="10,0,10,0"/>
+
+                            <TextBlock Text="Details Profile"
+                                       Foreground="{StaticResource titleColor2}"
+                                       FontSize="16"
+                                       FontFamily="Montserrat"
+                                       FontWeight="Medium"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+
+                        <!--User options-->
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    FlowDirection="RightToLeft"
+                                    VerticalAlignment="Center"
+                                    Margin="0,0,10,0">
+                            <Button Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color1}">
+                                <fa:ImageAwesome Icon="AngleDown"
+                                              Height="12" Width="12"
+                                              Style="{StaticResource iconButtonIcon}"/>
+                            </Button>
+                            <TextBlock 
+                                       Text="admin"
+                                       Foreground="{StaticResource titleColor3}"
+                                       FontFamily="Montserrat"
+                                       FontSize="12"
+                                       Name="tbSmallName"
+                                       VerticalAlignment="Center"/>
+                            <Ellipse Height="35" Width="35"
+                                     Stroke="{StaticResource color2}"
+                                     StrokeThickness="2"
+                                     Margin="10,0,10,0">
+                                <Ellipse.Fill>
+                                    <ImageBrush ImageSource="/static/image/logo.png"/>
+                                </Ellipse.Fill>
+                            </Ellipse>
+                            <Button Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color3}">
+                                <fa:ImageAwesome Icon="ClockOutline" Style="{StaticResource iconButtonIcon}"/>
+                            </Button>
+                            <Button Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color4}">
+                                <fa:ImageAwesome Icon="Envelope" Style="{StaticResource iconButtonIcon}"/>
+                            </Button>
+                            <Button Style="{StaticResource iconButton}"
+                                    Tag="{StaticResource color5}">
+                                <fa:ImageAwesome Icon="Bell" Style="{StaticResource iconButtonIcon}"/>
+                            </Button>
+                        </StackPanel>
+
+                    </Grid>
+                    <StackPanel Grid.Row="2" Margin="10">
+                        <TextBlock Text="Username: "
+                                    Foreground="LightGray"
+                                    FontSize="20"
+                                    FontWeight="Medium"
+                                    FontFamily="Montserrat"
+                                    TextWrapping="Wrap"
+                                    TextAlignment="Left"
+                                    Margin="0,5,0,0"
+                                    Name="tbUsername"/>
+                        <TextBlock Text="Role: "
+                                    Foreground="LightGray"
+                                    FontSize="20"
+                                    FontWeight="Medium"
+                                    FontFamily="Montserrat"
+                                    TextWrapping="Wrap"
+                                    TextAlignment="Left"
+                                    Margin="0,5,0,0"
+                                    Name="tbRole"/>
+                        <Button Name ="btnChangePass" HorizontalAlignment="Left"
+                                BorderThickness="0"
+                                Foreground="White"
+                                FontSize="12"
+                                FontFamily="Montserrat"
+                                Cursor="Hand"                           
+                                Margin="0,30,0,0"
+                                Content="Change Password" 
+                                Click="btnChangePass_Click">
+                            <Button.Style>
+                                <Style TargetType="Button">
+                                    <Setter Property="Background" Value="#462AD8"/>
+                                    <Style.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter Property="Background" Value="#28AEED"/>
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Width="150" Height="40"
+                                            CornerRadius="20"
+                                            Background="{TemplateBinding Background}">
+                                        <ContentPresenter VerticalAlignment="Center"
+                                            HorizontalAlignment="Center"/>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <StackPanel Name="spChangePass"  Visibility="Hidden" Margin="10 30" Width="500" HorizontalAlignment="Left">
+                            <PasswordBox x:Name="tbPass"                             
+                                         FontSize="13"
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="LightGray"
+                                         BorderBrush="DarkGray"
+                                         Height="28"
+                                         BorderThickness="0,0,0,2"                           
+                                         VerticalContentAlignment="Center"                          
+                                         Padding="20,0,0,0">
+                                <PasswordBox.Background>
+                                    <ImageBrush ImageSource="/static/image/key-icon.png"
+                                         Stretch="None"
+                                         AlignmentX="Left"/>
+                                </PasswordBox.Background>
+                            </PasswordBox>
+                            <PasswordBox x:Name="tbConfirm"                             
+                                         FontSize="13"
+                                         FontWeight="Medium"
+                                         FontFamily="Montserrat"                            
+                                         Foreground="White"
+                                         CaretBrush="LightGray"
+                                         BorderBrush="DarkGray"
+                                         Height="28"
+                                         BorderThickness="0,0,0,2"                           
+                                         VerticalContentAlignment="Center"                          
+                                         Padding="20,0,0,0"
+                                         Margin="0 10 0 0">
+                                <PasswordBox.Background>
+                                    <ImageBrush ImageSource="/static/image/key-icon.png"
+                                         Stretch="None"
+                                         AlignmentX="Left"/>
+                                </PasswordBox.Background>
+                            </PasswordBox>
+                            <Button Name="btnConfirmChangePass" HorizontalAlignment="Left"
+                                    Content = "Change" Click="btnConfirmChangePass_Click"
+                                    BorderThickness="0"
+                                    Foreground="White"
+                                    FontSize="12"
+                                    FontFamily="Montserrat"
+                                    Cursor="Hand"                           
+                                    Margin="0,30,0,0">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Background" Value="#462AD8"/>
+                                        <Style.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="#28AEED"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+
+                                <Button.Template>
+                                    <ControlTemplate TargetType="Button">
+                                        <Border Width="150" Height="40"
+                                                CornerRadius="20"
+                                                Background="{TemplateBinding Background}">
+                                            <ContentPresenter VerticalAlignment="Center"
+                                                HorizontalAlignment="Center"/>
+                                        </Border>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+
+                        </StackPanel>
+                        
+                    </StackPanel>
+
+                </Grid>
+            </Border>
         </Grid>
 
-    </Grid>
+    </Border>
+
 </Window>
