@@ -9,7 +9,7 @@
     <Grid>
         <!-- Labels and Textboxes for CRUD -->
         <Label Content="Product ID:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtProductId" HorizontalAlignment="Left" Margin="100,10,0,0" VerticalAlignment="Top" Width="200"
+        <TextBox x:Name="txtProductId" IsReadOnly="True" HorizontalAlignment="Left" Margin="100,10,0,0" VerticalAlignment="Top" Width="200"
                  Text="{Binding Path=ProductId, Mode=OneWay}"
                  DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
 
@@ -19,9 +19,9 @@
                 DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
 
         <Label Content="Category ID:" HorizontalAlignment="Left" Margin="10,70,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="txtCategoryId" HorizontalAlignment="Left" Margin="100,70,0,0" VerticalAlignment="Top" Width="200"
-                 Text="{Binding Path=CategoryId, Mode=OneWay}"
-                 DataContext="{Binding ElementName=lvProducts, Path=SelectedItem}"/>
+        <ComboBox x:Name="cbCategories" HorizontalAlignment="Left" Margin="100,70,0,0" VerticalAlignment="Top" Width="200" 
+                  DisplayMemberPath="CategoryName"
+          /> 
 
         <Label Content="Unit Price:" HorizontalAlignment="Left" Margin="10,100,0,0" VerticalAlignment="Top"/>
         <TextBox x:Name="txtUnitPrice" HorizontalAlignment="Left" Margin="100,100,0,0" VerticalAlignment="Top" Width="200"
@@ -43,7 +43,7 @@
         <Button Content="Search" HorizontalAlignment="Left" Margin="469,81,0,0" VerticalAlignment="Top" Width="75" Click="SearchProduct"/>
 
         <!-- Data Grid to display products -->
-        <ListView Name="lvProducts" Margin="0,187,10,10" >
+        <ListView Name="lvProducts" Margin="0,187,10,10" SelectionChanged="lvProducts_SelectionChanged" >
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="Product ID"  Width="100" 
